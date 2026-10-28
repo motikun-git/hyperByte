@@ -60,15 +60,21 @@ export default function MemoPrint({ id }) {
         <header className="memo__top">
           <h1 className="memo__brand">hyperByte</h1>
           <div className="memo__meta">
-            <span>{memoDate(w.startsAt)}</span>
+            <span>Date: {memoDate(w.startsAt)}</span>
             {w.invoiceNo ? <strong>Invoice No. {w.invoiceNo}</strong> : null}
           </div>
         </header>
 
         <section className="memo__billed">
-          <h2>Billed to:</h2>
-          <p>{w.customerName}</p>
-          <p>{w.customerPhone}</p>
+          <div>
+            <h2>Billed to:</h2>
+            <p>{w.customerName}</p>
+            <p>{w.customerPhone}</p>
+          </div>
+          <div className="memo__code">
+            <h2>Warranty code</h2>
+            <p className="memo__code-value">{w.code}</p>
+          </div>
         </section>
 
         <table className="memo__table">
@@ -87,8 +93,8 @@ export default function MemoPrint({ id }) {
                 <tr key={it.id}>
                   <td>
                     <span className="memo__item">{it.productName}</span>
+                    {it.serials.length ? <span className="memo__sn">SN: {it.serials.join(", ")}</span> : null}
                     {lines ? <span className="memo__sub">{lines}</span> : null}
-                    {it.serials.length ? <span className="memo__sub">SN: {it.serials.join(", ")}</span> : null}
                   </td>
                   <td className="c">{it.quantity}</td>
                   <td className="r">{it.unitPrice !== null ? tk(it.unitPrice) : ""}</td>
@@ -99,12 +105,7 @@ export default function MemoPrint({ id }) {
           </tbody>
         </table>
 
-        <div className="memo__bottom">
-          <div className="memo__code">
-            <span className="memo__code-label">Billing code</span>
-            <strong className="memo__code-value">{w.code}</strong>
-            <span className="memo__code-help">Check your warranty with this code at {site.replace(/^https?:\/\//, "")}/warranty</span>
-          </div>
+        <div className="memo__bottom memo__bottom--end">
           <dl className="memo__totals">
             <div>
               <dt>Subtotal</dt>

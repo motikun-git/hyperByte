@@ -22,3 +22,11 @@
   font-display: swap;
   unicode-range: U+09F3;
 }
+@font-face {
+  /* League Spartan Bold, only the letters of the "hyperByte" wordmark on the printed memo. */
+  font-family: "HB Logo";
+  src: url("/fonts/league-spartan-logo.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
