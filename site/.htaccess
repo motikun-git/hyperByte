@@ -1,0 +1,52 @@
+# HyperByte website (goes in public_html).
+Options -Indexes
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # After HTTPS works (cPanel > SSL/TLS Status > Run AutoSSL), remove the "#"
+    # from the next two lines to send every visitor to https://
+    # RewriteCond %{HTTPS} !=on
+    # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # The API and the photos have their own rules.
+    RewriteRule ^(api|uploads)(/|$) - [L]
+
+    # index.php adds the page title and preview tags, so never serve index.html directly.
+    RewriteRule ^index\.html$ / [R=301,L]
+
+    # Real files (scripts, styles, fonts, images) are served as they are.
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # Every other address is a page of the website.
+    RewriteRule ^ index.php [L,QSA]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+    # After HTTPS works, remove the "#" below:
+    # Header always set Strict-Transport-Security "max-age=31536000"
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/svg+xml "access plus 7 days"
+    ExpiresByType image/png "access plus 7 days"
+    ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/plain application/javascript application/json image/svg+xml application/xml
+</IfModule>
+
+# Never serve configuration, databases, logs or notes.
+<FilesMatch "^\.(?!well-known)">
+    Require all denied
+</FilesMatch>
+<FilesMatch "\.(env|sql|sqlite|log|md|lock|example|bak|zip)$">
+    Require all denied
+</FilesMatch>

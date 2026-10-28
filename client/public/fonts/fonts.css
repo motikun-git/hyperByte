@@ -1,0 +1,24 @@
+/* Self-hosted fonts (SIL Open Font License, see OFL-*.txt). Latin subsets,
+   plus the taka sign (৳) from Noto Sans Bengali, which the other two lack. */
+@font-face {
+  font-family: "Unbounded";
+  src: url("/fonts/unbounded-latin.woff2") format("woff2");
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Manrope";
+  src: url("/fonts/manrope-latin.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "HB Taka";
+  src: url("/fonts/taka.woff2") format("woff2");
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+09F3;
+}

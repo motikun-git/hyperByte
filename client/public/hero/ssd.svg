@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 150">
+  <defs>
+    <linearGradient id="pcb" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#18224a"/>
+      <stop offset="1" stop-color="#0b1128"/>
+    </linearGradient>
+    <linearGradient id="label" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2b1f63"/>
+      <stop offset="0.6" stop-color="#162058"/>
+      <stop offset="1" stop-color="#0d2a4a"/>
+    </linearGradient>
+    <linearGradient id="stripe" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#22D3EE"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#b4852b"/>
+      <stop offset="1" stop-color="#f4d98f"/>
+    </linearGradient>
+  </defs>
+  <!-- board: contact edge on the left (with the M-key notch), screw notch on the right -->
+  <path d="M14 36 H566 V62 A13 13 0 0 0 566 88 V114 H14 V96 H26 V84 H14 Z" fill="url(#pcb)" stroke="#2d3a78" stroke-width="2"/>
+  <g fill="url(#gold)">
+    <path d="M16 42h26v5H16zM16 51h26v5H16zM16 60h26v5H16zM16 69h26v5H16zM28 87h14v5H28zM16 100h26v5H16z"/>
+  </g>
+  <circle cx="566" cy="75" r="8" fill="none" stroke="#9aa3c4" stroke-width="3"/>
+  <!-- controller chip -->
+  <rect x="58" y="48" width="56" height="56" rx="6" fill="#05060d" stroke="#2c3567"/>
+  <rect x="66" y="56" width="40" height="40" rx="4" fill="#0f1430"/>
+  <!-- label sticker over the memory chips -->
+  <rect x="132" y="42" width="388" height="68" rx="6" fill="url(#label)" stroke="#5b4bc4" stroke-opacity="0.7"/>
+  <rect x="132" y="42" width="388" height="6" rx="3" fill="url(#stripe)"/>
+  <rect x="150" y="62" width="120" height="10" rx="5" fill="#c8ccff" opacity="0.9"/>
+  <rect x="150" y="80" width="200" height="6" rx="3" fill="#7d86c9" opacity="0.8"/>
+  <rect x="150" y="92" width="150" height="6" rx="3" fill="#5a63a8" opacity="0.8"/>
+  <g fill="#c8ccff" opacity="0.85">
+    <rect x="452" y="60" width="4" height="34"/><rect x="460" y="60" width="2" height="34"/><rect x="466" y="60" width="5" height="34"/><rect x="475" y="60" width="2" height="34"/><rect x="481" y="60" width="3" height="34"/><rect x="488" y="60" width="5" height="34"/><rect x="497" y="60" width="2" height="34"/>
+  </g>
+</svg>

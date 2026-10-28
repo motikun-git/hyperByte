@@ -1,0 +1,18 @@
+# Send every /api/... request to index.php. Nothing else in this folder
+# can be opened from a browser.
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(src|migrations|cli|storage|tests)(/|$) - [F,L]
+    RewriteCond %{REQUEST_URI} !/index\.php$
+    RewriteRule ^ index.php [L,QSA]
+</IfModule>
+
+# Hide configuration and data files even if rewriting is off.
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+<FilesMatch "\.(env|sql|sqlite|sqlite-journal|log|md|txt|json|lock|example)$">
+    Require all denied
+</FilesMatch>

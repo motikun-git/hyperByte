@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360">
+  <defs>
+    <linearGradient id="sub" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1b2f55"/>
+      <stop offset="1" stop-color="#0b142c"/>
+    </linearGradient>
+    <linearGradient id="ihs" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4f6fd"/>
+      <stop offset="0.35" stop-color="#c3c9df"/>
+      <stop offset="0.62" stop-color="#8790b3"/>
+      <stop offset="1" stop-color="#dfe3f2"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0.3" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="0.48" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="0.56" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f5dc94"/>
+      <stop offset="1" stop-color="#b3842a"/>
+    </linearGradient>
+  </defs>
+  <rect x="18" y="18" width="324" height="324" rx="20" fill="url(#sub)" stroke="#2b3e70" stroke-width="2"/>
+  <!-- small parts around the edge -->
+  <g fill="url(#gold)">
+    <rect x="40" y="38" width="10" height="5" rx="1"/><rect x="56" y="38" width="10" height="5" rx="1"/><rect x="72" y="38" width="10" height="5" rx="1"/>
+    <rect x="278" y="38" width="10" height="5" rx="1"/><rect x="294" y="38" width="10" height="5" rx="1"/><rect x="310" y="38" width="10" height="5" rx="1"/>
+    <rect x="40" y="316" width="10" height="5" rx="1"/><rect x="56" y="316" width="10" height="5" rx="1"/>
+    <rect x="294" y="316" width="10" height="5" rx="1"/><rect x="310" y="316" width="10" height="5" rx="1"/>
+    <rect x="36" y="150" width="5" height="10" rx="1"/><rect x="36" y="166" width="5" height="10" rx="1"/><rect x="36" y="182" width="5" height="10" rx="1"/>
+    <rect x="319" y="150" width="5" height="10" rx="1"/><rect x="319" y="166" width="5" height="10" rx="1"/><rect x="319" y="182" width="5" height="10" rx="1"/>
+  </g>
+  <path d="M30 330 L30 304 L56 330 Z" fill="url(#gold)"/>
+  <!-- heat spreader -->
+  <rect x="66" y="66" width="228" height="228" rx="24" fill="#3c4466" opacity="0.5" transform="translate(4 6)"/>
+  <rect x="66" y="66" width="228" height="228" rx="24" fill="url(#ihs)"/>
+  <rect x="66" y="66" width="228" height="228" rx="24" fill="url(#shine)"/>
+  <rect x="66.5" y="66.5" width="227" height="227" rx="23.5" fill="none" stroke="#ffffff" stroke-opacity="0.5"/>
+  <!-- engraved marks -->
+  <g fill="#6b7397" opacity="0.75">
+    <rect x="96" y="110" width="132" height="9" rx="4.5"/>
+    <rect x="96" y="130" width="96" height="7" rx="3.5"/>
+    <rect x="96" y="146" width="112" height="7" rx="3.5"/>
+    <rect x="96" y="226" width="70" height="7" rx="3.5"/>
+  </g>
+  <g fill="#6b7397" opacity="0.7">
+    <rect x="216" y="210" width="6" height="6"/><rect x="228" y="210" width="6" height="6"/><rect x="246" y="210" width="6" height="6"/>
+    <rect x="222" y="222" width="6" height="6"/><rect x="240" y="222" width="6" height="6"/><rect x="216" y="234" width="6" height="6"/>
+    <rect x="234" y="234" width="6" height="6"/><rect x="246" y="240" width="6" height="6"/><rect x="228" y="246" width="6" height="6"/>
+  </g>
+</svg>

@@ -1,0 +1,14 @@
+# Product photos. Only image files can be opened here; scripts never run.
+Options -Indexes
+
+<FilesMatch ".">
+    Require all denied
+</FilesMatch>
+<FilesMatch "\.(webp|jpe?g|png)$">
+    Require all granted
+</FilesMatch>
+
+<IfModule mod_headers.c>
+    Header set Cache-Control "public, max-age=2592000"
+    Header set X-Content-Type-Options "nosniff"
+</IfModule>

@@ -1,0 +1,566 @@
+/* ------------------------------------------------------------------ cosmic background */
+.cosmos {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.cosmos-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: var(--void);
+  pointer-events: none;
+}
+.cosmos-bg__blob {
+  position: absolute;
+  width: 80vmax;
+  height: 80vmax;
+  border-radius: 50%;
+  will-change: transform;
+}
+.cosmos-bg__blob--a {
+  top: -38vmax;
+  right: -26vmax;
+  background: radial-gradient(closest-side, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0) 72%);
+  animation: blob-a 34s ease-in-out infinite alternate;
+}
+.cosmos-bg__blob--b {
+  bottom: -44vmax;
+  left: -30vmax;
+  background: radial-gradient(closest-side, rgba(59, 130, 246, 0.16), rgba(59, 130, 246, 0) 72%);
+  animation: blob-b 42s ease-in-out infinite alternate;
+}
+.cosmos-bg__blob--c {
+  top: 30%;
+  left: 35%;
+  width: 50vmax;
+  height: 50vmax;
+  background: radial-gradient(closest-side, rgba(34, 211, 238, 0.06), rgba(34, 211, 238, 0) 72%);
+  animation: blob-c 48s ease-in-out infinite alternate;
+}
+@keyframes blob-a {
+  to {
+    transform: translate3d(-12vmax, 10vmax, 0) scale(1.1);
+  }
+}
+@keyframes blob-b {
+  to {
+    transform: translate3d(14vmax, -8vmax, 0) scale(1.15);
+  }
+}
+@keyframes blob-c {
+  to {
+    transform: translate3d(-10vmax, -12vmax, 0);
+  }
+}
+.motion-off .cosmos-bg__blob {
+  animation: none;
+}
+
+/* ------------------------------------------------------------------ intro */
+.intro-lock body {
+  overflow: hidden;
+}
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 18px;
+  background: var(--void);
+  overflow: hidden;
+  cursor: pointer;
+  transition: opacity 420ms var(--ease-out), transform 420ms var(--ease-out);
+}
+.intro--exit {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+.intro__particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.intro__line {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 2px;
+  margin-top: -1px;
+  background: linear-gradient(90deg, transparent, #3b82f6 35%, #a5f3fc 50%, #8b5cf6 65%, transparent);
+  box-shadow: 0 0 22px rgba(59, 130, 246, 0.9);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.intro--line .intro__line {
+  animation: intro-line 700ms var(--ease-in-out) forwards;
+}
+.intro--gather .intro__line,
+.intro--sweep .intro__line,
+.intro--exit .intro__line {
+  transform: scaleX(1);
+  opacity: 0;
+  transition: opacity 600ms;
+}
+@keyframes intro-line {
+  70% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0.35;
+  }
+}
+.intro__word {
+  position: relative;
+  display: flex;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(34px, 9.5vw, 112px);
+  letter-spacing: 0.05em;
+  line-height: 1;
+  font-kerning: none;
+}
+.intro__letter {
+  display: inline-block;
+  color: #e9ebff;
+  opacity: 0;
+  transform: translate3d(0, 20px, 0);
+  filter: blur(10px);
+  transition:
+    opacity 600ms var(--ease-out),
+    transform 800ms var(--ease-out),
+    filter 600ms var(--ease-out);
+  transition-delay: calc(var(--i) * 60ms + 250ms);
+}
+.intro--gather .intro__letter,
+.intro--sweep .intro__letter,
+.intro--exit .intro__letter {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+/* the holographic light sweep, drawn on a copy of the word */
+.intro__shine {
+  position: absolute;
+  inset: 0;
+  white-space: nowrap;
+  color: transparent;
+  background: linear-gradient(100deg, transparent 40%, rgba(165, 243, 252, 0.95) 47%, #ffffff 50%, rgba(196, 181, 253, 0.95) 53%, transparent 60%);
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  pointer-events: none;
+}
+.intro--sweep .intro__shine {
+  animation: holo 1100ms var(--ease-in-out) forwards;
+}
+@keyframes holo {
+  to {
+    background-position: 0% 0;
+  }
+}
+.intro__tag {
+  position: relative;
+  color: var(--text-2);
+  font-size: clamp(13px, 1.4vw, 15px);
+  letter-spacing: 0.08em;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 500ms var(--ease-out) 200ms, transform 500ms var(--ease-out) 200ms;
+}
+.intro--sweep .intro__tag,
+.intro--exit .intro__tag {
+  opacity: 1;
+  transform: none;
+}
+.intro__skip {
+  position: absolute;
+  right: 20px;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  padding: 10px 16px;
+  border-radius: var(--pill);
+  border: 1px solid var(--line-2);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-2);
+  font-weight: 700;
+  font-size: 14px;
+}
+.intro__skip:hover {
+  color: var(--text);
+  border-color: var(--violet);
+}
+
+/* ------------------------------------------------------------------ hero scene */
+.hero-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  perspective: 1400px;
+  pointer-events: none;
+  --px: 0;
+  --py: 0;
+  --sp: 0;
+}
+.hero-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.7;
+}
+.hero-lines__p {
+  fill: none;
+  stroke: url(#hl-a);
+  stroke-width: 1.4;
+  stroke-dasharray: 260 980;
+  animation: dash 11s linear infinite;
+}
+.hero-lines__p--2 {
+  animation-duration: 15s;
+  animation-delay: -5s;
+}
+.hero-lines__p--3 {
+  animation-duration: 19s;
+  animation-delay: -9s;
+  stroke-width: 1;
+}
+@keyframes dash {
+  from {
+    stroke-dashoffset: 1240;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.hero-sweep {
+  position: absolute;
+  top: -20%;
+  left: 35%;
+  width: 55%;
+  height: 140%;
+  background: linear-gradient(100deg, transparent 32%, rgba(139, 92, 246, 0.13) 46%, rgba(34, 211, 238, 0.1) 54%, transparent 68%);
+  transform: translateX(-30%) rotate(10deg);
+  animation: hero-sweep 14s ease-in-out infinite alternate;
+}
+@keyframes hero-sweep {
+  to {
+    transform: translateX(35%) rotate(10deg);
+  }
+}
+.hw {
+  position: absolute;
+  transform: translate3d(
+      calc(var(--px) * var(--depth) * var(--parallax)),
+      calc(var(--py) * var(--depth) * var(--parallax) * 0.7 - var(--sp) * var(--depth) * var(--drift)),
+      0
+    )
+    rotate(calc(var(--rot, 0deg) + var(--sp) * var(--spin) * 22deg)) rotateY(calc(var(--px) * var(--tilt)))
+    rotateX(calc(var(--py) * var(--tilt) * -1));
+  will-change: transform;
+}
+.hw__float {
+  animation: hw-float var(--float) ease-in-out infinite alternate;
+}
+.hw img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 28px 36px rgba(0, 0, 0, 0.65));
+  user-select: none;
+}
+.hw--gpu::before,
+.hw--laptop::before {
+  content: "";
+  position: absolute;
+  inset: -10% -6%;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgba(139, 92, 246, 0.42), rgba(59, 130, 246, 0.12) 55%, transparent 75%);
+}
+.hw--laptop::before {
+  background: radial-gradient(closest-side, rgba(34, 211, 238, 0.22), transparent 70%);
+}
+@keyframes hw-float {
+  from {
+    transform: translate3d(0, -14px, 0) rotate(-1.6deg);
+  }
+  to {
+    transform: translate3d(0, 14px, 0) rotate(1.6deg);
+  }
+}
+.hero-scene.is-paused .hw__float,
+.hero-scene.is-paused .hero-lines__p,
+.hero-scene.is-paused .hero-sweep {
+  animation-play-state: paused;
+}
+
+/* desktop placement */
+.hw--mobo {
+  --rot: -12deg;
+  right: -6%;
+  top: 6%;
+  width: 40%;
+  max-width: 600px;
+  opacity: 0.26;
+}
+.hw--laptop {
+  --rot: 5deg;
+  right: 21%;
+  top: 56%;
+  width: 28%;
+  max-width: 460px;
+  opacity: 0.85;
+}
+
+.hw--gpu {
+  --rot: -9deg;
+  right: 2%;
+  top: 30%;
+  width: 41%;
+  max-width: 660px;
+}
+.hw--cpu {
+  --rot: 15deg;
+  right: 35.5%;
+  top: 47%;
+  width: 11.5%;
+  max-width: 190px;
+}
+.hw--ram {
+  --rot: -30deg;
+  right: 4%;
+  top: 14%;
+  width: 24%;
+  max-width: 390px;
+}
+.hw--ssd {
+  --rot: 16deg;
+  right: 4%;
+  top: 76%;
+  width: 21%;
+  max-width: 340px;
+}
+
+/* tablets and phones: the scene sits above the text */
+@media (max-width: 899px) {
+  .hero-scene {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: clamp(260px, 64vw, 420px);
+    order: -1;
+  }
+  .hw--mobo {
+    display: none;
+  }
+  .hw--gpu {
+    right: 10%;
+    top: 26%;
+    width: 72%;
+  }
+  .hw--laptop {
+    right: 46%;
+    top: 46%;
+    width: 46%;
+    opacity: 0.7;
+  }
+  .hw--cpu {
+    right: 4%;
+    top: 58%;
+    width: 21%;
+  }
+  .hw--ram {
+    right: 34%;
+    top: 4%;
+    width: 46%;
+  }
+  .hw--ssd {
+    right: 2%;
+    top: 6%;
+    width: 30%;
+  }
+  .hero-lines {
+    opacity: 0.45;
+  }
+}
+
+/* ------------------------------------------------------------------ kinetic type */
+.split__word {
+  display: inline-block;
+  white-space: nowrap;
+}
+.split__char {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 0.5em, 0) rotateX(-50deg);
+  filter: blur(10px);
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 900ms var(--ease-out),
+    filter 700ms var(--ease-out);
+  transition-delay: calc(var(--base, 0ms) + var(--i) * var(--stagger, 32ms));
+}
+.split.is-in .split__char {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+.motion-off .split__char {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  transition: none;
+}
+
+.rotator {
+  display: inline-block;
+}
+.rotator__stage {
+  display: inline-grid;
+}
+.rotator__item {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translate3d(0, 70%, 0);
+  filter: blur(6px);
+  transition:
+    opacity 600ms var(--ease-out),
+    transform 700ms var(--ease-out),
+    filter 600ms var(--ease-out);
+}
+.rotator__item.is-active {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+.rotator__item.is-leaving {
+  transform: translate3d(0, -70%, 0);
+}
+.motion-off .rotator__item {
+  transition: none;
+}
+
+.section-heading {
+  position: relative;
+  isolation: isolate;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(26px, 3.8vw, 46px);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+/* a soft light that follows the pointer behind the heading (mouse only) */
+.section-heading::before {
+  content: none;
+  position: absolute;
+  inset: -30px -24px;
+  z-index: -1;
+  background: radial-gradient(
+    200px circle at calc(var(--hx, -400px) + 24px) calc(var(--hy, 50%) + 30px),
+    rgba(139, 92, 246, 0.3),
+    rgba(34, 211, 238, 0.1) 45%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease-out);
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .section-heading::before {
+    content: "";
+  }
+  .section-heading:hover::before {
+    opacity: 1;
+  }
+}
+.sh__mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.sh__word {
+  display: inline-block;
+  transform: translate3d(0, 115%, 0);
+  transition: transform 900ms var(--ease-out);
+  transition-delay: calc(var(--i) * 70ms);
+}
+.section-heading.is-in .sh__word {
+  transform: none;
+}
+.motion-off .sh__word {
+  transform: none;
+  transition: none;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 800ms var(--ease-out),
+    transform 900ms var(--ease-out);
+  transition-delay: var(--delay, 0ms);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+.motion-off .reveal {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+.bigword {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(84px, 19vw, 300px);
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(148, 163, 255, 0.11);
+  transform: translate3d(var(--shift, 0), 0, 0);
+  pointer-events: none;
+  user-select: none;
+}
+
+.separator {
+  height: 1px;
+  margin-inline: auto;
+  max-width: var(--max);
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.6), rgba(34, 211, 238, 0.6), transparent);
+  transform: scaleX(0);
+  transition: transform 1.4s var(--ease-out);
+}
+.separator.is-in {
+  transform: scaleX(1);
+}
+.motion-off .separator {
+  transform: none;
+}
+
+/* everything decorative stops when motion is off */
+.motion-off .hw__float,
+.motion-off .hero-lines__p,
+.motion-off .hero-sweep {
+  animation: none;
+}
+.motion-off .hw {
+  transform: rotate(var(--rot, 0deg));
+}

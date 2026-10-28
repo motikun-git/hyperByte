@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 180">
+  <defs>
+    <linearGradient id="spreader" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a3368"/>
+      <stop offset="0.5" stop-color="#161c40"/>
+      <stop offset="1" stop-color="#0b0f24"/>
+    </linearGradient>
+    <linearGradient id="rgb" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22D3EE"/>
+      <stop offset="0.35" stop-color="#3B82F6"/>
+      <stop offset="0.7" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#A855F7"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f4d98f"/>
+      <stop offset="1" stop-color="#b4852b"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow" x="-10%" y="-150%" width="120%" height="400%"><feGaussianBlur stdDeviation="7"/></filter>
+  </defs>
+  <!-- PCB -->
+  <path d="M20 48 H620 V150 H342 V158 H326 V150 H20 Z" fill="#0c1534"/>
+  <!-- gold contacts -->
+  <g fill="url(#gold)">
+    <path d="M30 150h7v22h-7zM42 150h7v22h-7zM54 150h7v22h-7zM66 150h7v22h-7zM78 150h7v22h-7zM90 150h7v22h-7zM102 150h7v22h-7zM114 150h7v22h-7zM126 150h7v22h-7zM138 150h7v22h-7zM150 150h7v22h-7zM162 150h7v22h-7zM174 150h7v22h-7zM186 150h7v22h-7zM198 150h7v22h-7zM210 150h7v22h-7zM222 150h7v22h-7zM234 150h7v22h-7zM246 150h7v22h-7zM258 150h7v22h-7zM270 150h7v22h-7zM282 150h7v22h-7zM294 150h7v22h-7zM306 150h7v22h-7z"/>
+    <path d="M352 150h7v22h-7zM364 150h7v22h-7zM376 150h7v22h-7zM388 150h7v22h-7zM400 150h7v22h-7zM412 150h7v22h-7zM424 150h7v22h-7zM436 150h7v22h-7zM448 150h7v22h-7zM460 150h7v22h-7zM472 150h7v22h-7zM484 150h7v22h-7zM496 150h7v22h-7zM508 150h7v22h-7zM520 150h7v22h-7zM532 150h7v22h-7zM544 150h7v22h-7zM556 150h7v22h-7zM568 150h7v22h-7zM580 150h7v22h-7zM592 150h7v22h-7zM604 150h7v22h-7z"/>
+  </g>
+  <rect x="20" y="166" width="600" height="8" fill="#0c1534" opacity="0"/>
+  <!-- heat spreader with angled cut -->
+  <path d="M14 30 H626 V136 H470 L446 112 H194 L170 136 H14 Z" fill="url(#spreader)" stroke="#3a4588" stroke-width="2"/>
+  <path d="M14 30 H626" stroke="url(#edge)" stroke-width="3"/>
+  <g stroke="#2a3466" stroke-width="1.5" opacity="0.8">
+    <path d="M40 52 H300M40 62 H260M40 72 H220"/>
+    <path d="M600 52 H340M600 62 H380M600 72 H420"/>
+  </g>
+  <!-- label -->
+  <rect x="236" y="62" width="168" height="34" rx="6" fill="#0a0e22" stroke="#3a4588"/>
+  <rect x="250" y="72" width="88" height="5" rx="2.5" fill="#5a66a8"/>
+  <rect x="250" y="83" width="58" height="4" rx="2" fill="#3c4680"/>
+  <rect x="352" y="70" width="40" height="18" rx="4" fill="url(#rgb)" opacity="0.8"/>
+  <!-- RGB diffuser -->
+  <rect x="18" y="10" width="604" height="22" rx="11" fill="url(#rgb)" filter="url(#glow)" opacity="0.85"/>
+  <rect x="18" y="12" width="604" height="18" rx="9" fill="url(#rgb)"/>
+  <rect x="24" y="14" width="592" height="5" rx="2.5" fill="#ffffff" opacity="0.35"/>
+</svg>

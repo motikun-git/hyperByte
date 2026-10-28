@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <defs>
+    <linearGradient id="board" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#121a3a"/>
+      <stop offset="1" stop-color="#070b1c"/>
+    </linearGradient>
+    <linearGradient id="sink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#36407a"/>
+      <stop offset="1" stop-color="#12173a"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e3e7f5"/>
+      <stop offset="0.5" stop-color="#8a93b6"/>
+      <stop offset="1" stop-color="#c9cee4"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#22D3EE"/>
+    </linearGradient>
+  </defs>
+  <rect x="16" y="16" width="568" height="568" rx="16" fill="url(#board)" stroke="#273166" stroke-width="2"/>
+  <!-- traces -->
+  <g fill="none" stroke="#1d275a" stroke-width="2" opacity="0.9">
+    <path d="M60 520 H200 L240 480 H380"/>
+    <path d="M60 540 H220 L260 500 H420 L450 470"/>
+    <path d="M520 560 V420 L500 400"/>
+    <path d="M300 300 V360 H200 L180 380"/>
+    <path d="M380 300 L410 330 H540"/>
+    <path d="M90 300 H150 L170 280"/>
+  </g>
+  <!-- IO shroud -->
+  <path d="M30 30 H170 L190 50 V170 H120 L100 190 H30 Z" fill="url(#sink)" stroke="#3b4688"/>
+  <path d="M44 60 H160" stroke="url(#accent)" stroke-width="4" stroke-linecap="round"/>
+  <!-- VRM heatsinks -->
+  <g fill="url(#sink)" stroke="#3b4688">
+    <rect x="200" y="36" width="190" height="56" rx="8"/>
+    <rect x="132" y="210" width="56" height="170" rx="8"/>
+  </g>
+  <g stroke="#4e5a9c" stroke-width="2">
+    <path d="M214 46v36M228 46v36M242 46v36M256 46v36M270 46v36M284 46v36M298 46v36M312 46v36M326 46v36M340 46v36M354 46v36M368 46v36"/>
+    <path d="M142 222h36M142 236h36M142 250h36M142 264h36M142 278h36M142 292h36M142 306h36M142 320h36M142 334h36M142 348h36M142 362h36"/>
+  </g>
+  <!-- CPU socket -->
+  <rect x="222" y="120" width="160" height="160" rx="10" fill="url(#metal)"/>
+  <rect x="238" y="136" width="128" height="128" rx="4" fill="#0a0e20"/>
+  <g fill="#2a3263">
+    <circle cx="252" cy="150" r="2"/><circle cx="264" cy="150" r="2"/><circle cx="276" cy="150" r="2"/><circle cx="288" cy="150" r="2"/><circle cx="300" cy="150" r="2"/><circle cx="312" cy="150" r="2"/><circle cx="324" cy="150" r="2"/><circle cx="336" cy="150" r="2"/><circle cx="348" cy="150" r="2"/>
+    <circle cx="252" cy="250" r="2"/><circle cx="264" cy="250" r="2"/><circle cx="276" cy="250" r="2"/><circle cx="288" cy="250" r="2"/><circle cx="300" cy="250" r="2"/><circle cx="312" cy="250" r="2"/><circle cx="324" cy="250" r="2"/><circle cx="336" cy="250" r="2"/><circle cx="348" cy="250" r="2"/>
+  </g>
+  <rect x="262" y="160" width="80" height="80" rx="4" fill="#111739" stroke="#2c3567"/>
+  <!-- RAM slots -->
+  <g fill="#161d42" stroke="#2d3770">
+    <rect x="420" y="60" width="18" height="260" rx="3"/>
+    <rect x="446" y="60" width="18" height="260" rx="3"/>
+    <rect x="472" y="60" width="18" height="260" rx="3"/>
+    <rect x="498" y="60" width="18" height="260" rx="3"/>
+  </g>
+  <g fill="#8B5CF6" opacity="0.9"><rect x="420" y="60" width="18" height="10" rx="2"/><rect x="472" y="60" width="18" height="10" rx="2"/></g>
+  <g fill="#22D3EE" opacity="0.8"><rect x="446" y="60" width="18" height="10" rx="2"/><rect x="498" y="60" width="18" height="10" rx="2"/></g>
+  <!-- 24-pin power -->
+  <rect x="540" y="140" width="28" height="120" rx="4" fill="#0a0e20" stroke="#2c3567"/>
+  <g fill="#1f2750"><rect x="546" y="148" width="7" height="7"/><rect x="556" y="148" width="7" height="7"/><rect x="546" y="160" width="7" height="7"/><rect x="556" y="160" width="7" height="7"/><rect x="546" y="172" width="7" height="7"/><rect x="556" y="172" width="7" height="7"/><rect x="546" y="184" width="7" height="7"/><rect x="556" y="184" width="7" height="7"/><rect x="546" y="196" width="7" height="7"/><rect x="556" y="196" width="7" height="7"/><rect x="546" y="208" width="7" height="7"/><rect x="556" y="208" width="7" height="7"/><rect x="546" y="220" width="7" height="7"/><rect x="556" y="220" width="7" height="7"/><rect x="546" y="232" width="7" height="7"/><rect x="556" y="232" width="7" height="7"/><rect x="546" y="244" width="7" height="7"/><rect x="556" y="244" width="7" height="7"/></g>
+  <!-- M.2 shield -->
+  <rect x="210" y="306" width="230" height="40" rx="6" fill="url(#sink)" stroke="#3b4688"/>
+  <path d="M222 326 H428" stroke="url(#accent)" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
+  <!-- PCIe slots -->
+  <rect x="70" y="380" width="380" height="22" rx="4" fill="url(#metal)"/>
+  <rect x="80" y="386" width="360" height="10" rx="3" fill="#0a0e20"/>
+  <rect x="70" y="460" width="380" height="20" rx="4" fill="#161d42" stroke="#2d3770"/>
+  <rect x="70" y="520" width="140" height="18" rx="4" fill="#161d42" stroke="#2d3770"/>
+  <!-- chipset -->
+  <rect x="470" y="400" width="90" height="90" rx="12" fill="url(#sink)" stroke="#3b4688"/>
+  <circle cx="515" cy="445" r="22" fill="none" stroke="url(#accent)" stroke-width="3"/>
+  <!-- capacitors -->
+  <g fill="#232b5a" stroke="#3b4688">
+    <circle cx="210" cy="290" r="7"/><circle cx="196" cy="290" r="7"/><circle cx="400" cy="110" r="7"/><circle cx="400" cy="132" r="7"/>
+  </g>
+  <!-- SATA -->
+  <g fill="#0a0e20" stroke="#2c3567"><rect x="490" y="520" width="34" height="18" rx="3"/><rect x="530" y="520" width="34" height="18" rx="3"/></g>
+</svg>

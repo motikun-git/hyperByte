@@ -1,0 +1,23 @@
+# dependencies and builds
+node_modules/
+client/dist/
+deploy/
+
+# secrets and local data (never commit these)
+.env
+.env.local
+api/.env
+api/storage/*
+!api/storage/.htaccess
+!api/storage/sessions/
+!api/storage/logs/
+api/storage/sessions/*
+api/storage/logs/*
+!api/storage/sessions/.gitkeep
+!api/storage/logs/.gitkeep
+uploads/
+
+# system files
+*.log
+.DS_Store
+Thumbs.db
