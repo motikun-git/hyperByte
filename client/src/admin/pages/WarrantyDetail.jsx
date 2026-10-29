@@ -7,6 +7,7 @@ import { dateLong, dateShort, dateTime } from "../../lib/format.js";
 import { toWaNumber, whatsappLink } from "../../lib/contact.js";
 import { adminApi } from "../adminApi.js";
 import WarrantyForm, { tk } from "../components/WarrantyForm.jsx";
+import { downloadMemoPdf } from "../lib/memoPdf.js";
 import { Busy, CopyButton, Field, LoadError, PageHead, useAdminApi, useDocTitle } from "../ui.jsx";
 import { remainingText, WARRANTY_LABELS } from "./WarrantiesList.jsx";
 
@@ -20,7 +21,20 @@ export default function WarrantyDetail({ id }) {
   const [editing, setEditing] = useState(false);
   const [dialog, setDialog] = useState(null); // { kind: "extend" | "void" | "delete", item? }
   const [busy, setBusy] = useState(false);
+  const [pdfBusy, setPdfBusy] = useState(false);
   useDocTitle(w ? `Memo ${w.invoiceNo || w.code}` : "Warranty");
+
+  const downloadMemo = async () => {
+    setPdfBusy(true);
+    try {
+      await downloadMemoPdf(w.memo);
+      toast("Memo downloaded as PDF");
+    } catch (err) {
+      toast(err.message || "Could not create the PDF.", "error");
+    } finally {
+      setPdfBusy(false);
+    }
+  };
 
   const act = async (path, body, message) => {
     setBusy(true);
@@ -76,8 +90,11 @@ export default function WarrantyDetail({ id }) {
         back={{ to: "/admin/warranties", label: "Warranties" }}
         actions={
           <>
-            <Link to={`/admin/warranties/${id}/memo`} className="btn btn--primary btn--sm">
-              <Icon name="printer" size={16} /> Print memo
+            <button type="button" className="btn btn--primary btn--sm" onClick={downloadMemo} disabled={pdfBusy}>
+              {pdfBusy ? <Busy /> : <Icon name="arrowDown" size={16} />} Download memo (PDF)
+            </button>
+            <Link to={`/admin/warranties/${id}/memo`} className="btn btn--ghost btn--sm">
+              <Icon name="receipt" size={16} /> View memo
             </Link>
             <button type="button" className="btn btn--ghost btn--sm" onClick={() => setEditing(true)}>
               <Icon name="pencil" size={16} /> Edit
@@ -88,7 +105,7 @@ export default function WarrantyDetail({ id }) {
 
       {created ? (
         <p className="notice" style={{ marginBottom: 16 }} role="status">
-          <Icon name="circleCheck" size={18} /> Memo created. Print it for the customer, and send the code on WhatsApp.
+          <Icon name="circleCheck" size={18} /> Memo created. Download the memo as a PDF for the customer, and send the code on WhatsApp.
         </p>
       ) : null}
 

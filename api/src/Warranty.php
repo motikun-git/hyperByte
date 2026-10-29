@@ -225,7 +225,7 @@ final class Warranty
         $discount = (float) $memo['discount'];
         $status = self::memoStatus($memo, $statuses);
         $expires = self::ts($memo['expires_at']);
-        return [
+        $view = [
             'id' => (int) $memo['id'],
             'code' => $memo['code'],
             'invoiceNo' => $memo['invoice_no'],
@@ -251,6 +251,59 @@ final class Warranty
             'createdAt' => Util::iso($memo['created_at']),
             'updatedAt' => Util::iso($memo['updated_at']),
         ];
+        // The memo as it was issued (used to download it again). Older records fall back to the current data.
+        $saved = isset($memo['memo_snapshot']) && $memo['memo_snapshot'] ? json_decode((string) $memo['memo_snapshot'], true) : null;
+        $view['memo'] = is_array($saved) ? $saved : self::memoFromView($view);
+        return $view;
+    }
+
+    /** "15 Days Replacement | 2 Years Service Warranty" */
+    public static function memoLine(string $note, string $period): string
+    {
+        return implode(' | ', array_filter([$note, $period !== '' ? "$period Service Warranty" : '']));
+    }
+
+    /** Everything printed on the memo, frozen at the time it is saved. */
+    public static function memoFromView(array $v): array
+    {
+        $s = Settings::all();
+        return [
+            'version' => 1,
+            'savedAt' => gmdate('Y-m-d\TH:i:s\Z'),
+            'code' => $v['code'],
+            'invoiceNo' => $v['invoiceNo'],
+            'date' => $v['startsAt'],
+            'customerName' => $v['customerName'],
+            'customerPhone' => $v['customerPhone'],
+            'items' => array_map(static fn ($it) => [
+                'name' => $it['productName'],
+                'quantity' => $it['quantity'],
+                'serials' => $it['serials'],
+                'unitPrice' => $it['unitPrice'],
+                'amount' => $it['amount'],
+                'line' => self::memoLine((string) $it['warrantyNote'], (string) $it['period']),
+            ], $v['items']),
+            'subtotal' => $v['subtotal'],
+            'discount' => $v['discount'],
+            'total' => $v['total'],
+            'payment' => $v['paymentLabel'],
+            'seller' => [
+                'name' => (string) $s['memoName'],
+                'address' => (string) $s['memoAddress'],
+                'phone' => (string) $s['memoPhone'],
+                'facebook' => (string) $s['memoFacebook'],
+                'site' => rtrim((string) $s['memoSiteUrl'], '/'),
+            ],
+        ];
+    }
+
+    /** Saves the memo as it looks now. Called when a memo is created or edited, never on extend or void. */
+    public static function saveSnapshot(int $id): void
+    {
+        $memo = self::find($id);
+        $memo['memo_snapshot'] = null;
+        $json = json_encode(self::memoFromView(self::adminView($memo)), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        Db::update('warranties', ['memo_snapshot' => $json], 'id = ?', [$id]);
     }
 
     // ------------------------------------------------------------------ lists
@@ -522,6 +575,7 @@ final class Warranty
             self::sync($id);
             return $id;
         });
+        self::saveSnapshot($id);
         return self::adminView(self::find($id));
     }
 

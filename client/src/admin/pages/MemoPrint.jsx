@@ -1,7 +1,8 @@
-// The printable sales memo, in the layout of HyperByte's memo template.
-// Opened from a warranty memo; "Print" uses the browser's print dialog
-// (choose "Save as PDF" there to get a PDF).
-import { useEffect } from "react";
+// The sales memo, in the layout of HyperByte's memo template: a preview on
+// screen and a "Download PDF" button that saves it as a PDF file.
+import { useEffect, useState } from "react";
+import { useToast } from "../../context/ToastContext.jsx";
+import { downloadMemoPdf } from "../lib/memoPdf.js";
 import { Link } from "../../lib/router.jsx";
 import Icon from "../../components/ui/Icon.jsx";
 import { qrPath } from "../../lib/qr.js";
@@ -14,9 +15,11 @@ const memoDate = (iso) =>
 
 export default function MemoPrint({ id }) {
   const memo = useAdminApi(`/admin/warranties/${id}`);
-  const settings = useAdminApi("/admin/settings");
-  const w = memo.data?.warranty;
-  const s = settings.data?.settings;
+  // The memo as it was issued; it does not change when settings change later.
+  const w = memo.data?.warranty?.memo;
+  const s = w?.seller || {};
+  const toast = useToast();
+  const [busy, setBusy] = useState(false);
   useDocTitle(w ? `Memo ${w.invoiceNo || w.code}` : "Memo");
 
   useEffect(() => {
@@ -24,15 +27,14 @@ export default function MemoPrint({ id }) {
     return () => document.documentElement.classList.remove("memo-mode");
   }, []);
 
-  const error = memo.error || settings.error;
-  if (error && (!w || !s)) {
+  if (memo.error && !w) {
     return (
       <div className="memo-page">
-        <LoadError error={error} onRetry={() => (memo.reload(), settings.reload())} />
+        <LoadError error={memo.error} onRetry={memo.reload} />
       </div>
     );
   }
-  if (!w || !s) {
+  if (!w) {
     return (
       <div className="memo-page">
         <div className="spinner" aria-label="Loading" />
@@ -40,7 +42,7 @@ export default function MemoPrint({ id }) {
     );
   }
 
-  const site = (s.memoSiteUrl || "https://yourhyperbyte.com").replace(/\/+$/, "");
+  const site = (s.site || "https://yourhyperbyte.com").replace(/\/+$/, "");
   const checkUrl = `${site}/warranty?code=${w.code}`;
   const qr = qrPath(checkUrl);
 
@@ -50,9 +52,25 @@ export default function MemoPrint({ id }) {
         <Link to={`/admin/warranties/${id}`} className="btn btn--ghost btn--sm">
           <Icon name="arrowLeft" size={16} /> Back
         </Link>
-        <span className="memo-tools__hint">Tip: in the print window choose "Save as PDF" to send it as a file.</span>
-        <button type="button" className="btn btn--primary btn--sm" onClick={() => window.print()} autoFocus>
-          <Icon name="printer" size={16} /> Print memo
+        <span className="memo-tools__hint">The PDF looks the same as this preview.</span>
+        <button
+          type="button"
+          className="btn btn--primary btn--sm"
+          autoFocus
+          disabled={busy}
+          onClick={async () => {
+            setBusy(true);
+            try {
+              await downloadMemoPdf(w);
+              toast("Memo downloaded as PDF");
+            } catch (err) {
+              toast(err.message || "Could not create the PDF.", "error");
+            } finally {
+              setBusy(false);
+            }
+          }}
+        >
+          {busy ? <span className="spinner spinner--sm" aria-hidden="true" /> : <Icon name="arrowDown" size={16} />} Download PDF
         </button>
       </div>
 
@@ -60,7 +78,7 @@ export default function MemoPrint({ id }) {
         <header className="memo__top">
           <h1 className="memo__brand">hyperByte</h1>
           <div className="memo__meta">
-            <span>Date: {memoDate(w.startsAt)}</span>
+            <span>Date: {memoDate(w.date)}</span>
             {w.invoiceNo ? <strong>Invoice No. {w.invoiceNo}</strong> : null}
           </div>
         </header>
@@ -87,14 +105,13 @@ export default function MemoPrint({ id }) {
             </tr>
           </thead>
           <tbody>
-            {w.items.map((it) => {
-              const lines = [it.warrantyNote, it.period ? `${it.period} Warranty` : ""].filter(Boolean).join(" | ");
+            {w.items.map((it, i) => {
               return (
-                <tr key={it.id}>
+                <tr key={i}>
                   <td>
-                    <span className="memo__item">{it.productName}</span>
+                    <span className="memo__item">{it.name}</span>
                     {it.serials.length ? <span className="memo__sn">SN: {it.serials.join(", ")}</span> : null}
-                    {lines ? <span className="memo__sub">{lines}</span> : null}
+                    {it.line ? <span className="memo__sub">{it.line}</span> : null}
                   </td>
                   <td className="c">{it.quantity}</td>
                   <td className="r">{it.unitPrice !== null ? tk(it.unitPrice) : ""}</td>
@@ -127,15 +144,15 @@ export default function MemoPrint({ id }) {
         <footer className="memo__foot">
           <div>
             <h2>Payment Information</h2>
-            <p>{w.paymentLabel}</p>
+            <p>{w.payment}</p>
           </div>
           <div className="memo__seller">
-            <h2>{s.memoName}</h2>
+            <h2>{s.name}</h2>
             <div className="memo__seller-row">
               <div>
-                {s.memoAddress ? <p>{s.memoAddress}</p> : null}
-                {s.memoPhone ? <p>{s.memoPhone}</p> : null}
-                {s.memoFacebook ? <p>{s.memoFacebook}</p> : null}
+                {s.address ? <p>{s.address}</p> : null}
+                {s.phone ? <p>{s.phone}</p> : null}
+                {s.facebook ? <p>{s.facebook}</p> : null}
               </div>
               <svg className="memo__qr" viewBox={`0 0 ${qr.view} ${qr.view}`} role="img" aria-label={`QR code: ${checkUrl}`} shapeRendering="crispEdges">
                 <rect width={qr.view} height={qr.view} fill="#fff" />

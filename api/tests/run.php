@@ -779,6 +779,26 @@ test('editing a memo keeps its code, number and extended dates', function () use
     eq(count($admin->put("/api/admin/warranties/{$w['id']}", ['customerName' => 'Karim Uddin', 'customerPhone' => $w['customerPhone'], 'paymentMethod' => 'transfer', 'discount' => 500, 'startsAt' => $w['startsAt'], 'items' => $items])['json']['warranty']['items']), 2, 'product removed');
 });
 
+test('a memo downloads again exactly as it was issued', function () use ($admin, &$ids) {
+    $id = $ids['w_old']['id'];
+    $before = $admin->get("/api/admin/warranties/$id")['json']['warranty']['memo'];
+    eq($before['items'][0]['line'], '30 Days Service Warranty', 'service warranty line');
+    eq($before['items'][1]['line'], '1 Month Service Warranty');
+    eq($before['seller']['name'], 'hyperByte');
+    status($admin->put('/api/admin/settings', ['memoAddress' => 'Somewhere else, Dhaka']), 200);
+    status($admin->post("/api/admin/warranties/$id/extend", ['days' => 5]), 200);
+    $after = $admin->get("/api/admin/warranties/$id")['json']['warranty']['memo'];
+    unset($before['savedAt'], $after['savedAt']);
+    eq($after, $before, 'same memo after a settings change and an extension');
+    $new = $admin->post('/api/admin/warranties', [
+        'customerName' => 'Test', 'customerPhone' => '01900000000', 'paymentMethod' => 'cash',
+        'items' => [['productName' => 'Mouse', 'quantity' => 1, 'unitPrice' => 500]],
+    ])['json']['warranty'];
+    eq($new['memo']['seller']['address'], 'Somewhere else, Dhaka', 'new memos use the new settings');
+    status($admin->delete("/api/admin/warranties/{$new['id']}", ['confirmCode' => $new['code']]), 200);
+    status($admin->put('/api/admin/settings', ['memoAddress' => 'Mariam Mart, Kunjaban Road, Rampura, Dhaka']), 200);
+});
+
 test('find a memo by phone (any format), serial, memo number or code', function () use ($admin, &$ids) {
     $old = $ids['w_old'];
     foreach (['karim', '01712345678', '8801712345678', '+880 1712 345678', '1712-345', 'RAM-B', 'gpu-sn-1', $old['invoiceNo'], strtolower($old['code'])] as $q) {
@@ -849,7 +869,10 @@ test('dashboard numbers', function () use ($admin) {
 test('activity log records admin changes', function () use ($admin) {
     $r = $admin->get('/api/admin/activity');
     status($r, 200);
-    $actions = array_column($r['json']['items'], 'action');
+    $actions = [];
+    for ($page = 1; $page <= $r['json']['pages']; $page++) {
+        $actions = array_merge($actions, array_column($admin->get("/api/admin/activity?page=$page")['json']['items'], 'action'));
+    }
     foreach (['setup', 'login', 'product.create', 'warranty.void', 'settings.update'] as $a) {
         ok(in_array($a, $actions, true), "logged: $a");
     }
