@@ -167,7 +167,7 @@ export default function WarrantyDetail({ id }) {
                   </div>
                   {it.status !== "none" ? (
                     <p className="m-ditem__period">
-                      {it.period} warranty{it.warrantyNote ? `, ${it.warrantyNote}` : ""}. {it.status === "expired" ? "Ended" : "Ends"} {dateShort(it.expiresAt)}
+                      {it.period} {it.typeLabel || "Warranty"}{it.warrantyNote ? `, ${it.warrantyNote}` : ""}. {it.status === "expired" ? "Ended" : "Ends"} {dateShort(it.expiresAt)}
                       {it.status === "active" ? ` (${remainingText(it)})` : ""}
                       {it.status === "void" && it.voidReason ? `. Void: ${it.voidReason}` : ""}
                     </p>

@@ -29,7 +29,7 @@ const toNum = (v) => {
 };
 
 let key = 1;
-const emptyItem = () => ({ key: key++, id: null, product: null, productName: "", quantity: 1, serials: [""], unitPrice: "", warrantyValue: "", warrantyUnit: "day", warrantyNote: "" });
+const emptyItem = () => ({ key: key++, id: null, product: null, productName: "", quantity: 1, serials: [""], unitPrice: "", warrantyValue: "", warrantyUnit: "day", warrantyType: "warranty", warrantyNote: "" });
 
 function fromInitial(item) {
   return {
@@ -42,6 +42,7 @@ function fromInitial(item) {
     unitPrice: item.unitPrice === null ? "" : String(item.unitPrice),
     warrantyValue: item.warrantyValue ? String(item.warrantyValue) : "",
     warrantyUnit: item.warrantyUnit || "day",
+    warrantyType: item.warrantyType || "warranty",
     warrantyNote: item.warrantyNote || "",
   };
 }
@@ -110,6 +111,7 @@ export default function WarrantyForm({ initial = null, presetProduct = null, onS
         unitPrice: it.unitPrice,
         warrantyValue: it.warrantyValue,
         warrantyUnit: it.warrantyUnit,
+        warrantyType: it.warrantyType,
         warrantyNote: it.warrantyNote,
       })),
     };
@@ -230,8 +232,24 @@ export default function WarrantyForm({ initial = null, presetProduct = null, onS
                     {err(p + "serials") ? <p className="field__error">{err(p + "serials")}</p> : null}
                   </div>
 
+                  <div className="field">
+                    <span className="field__label" id={`wtype-${it.key}`}>
+                      Type of warranty
+                    </span>
+                    <div className="a-segment" role="radiogroup" aria-labelledby={`wtype-${it.key}`}>
+                      {[
+                        ["warranty", "Warranty"],
+                        ["service", "Service Warranty"],
+                      ].map(([value, label]) => (
+                        <button key={value} type="button" role="radio" aria-checked={it.warrantyType === value} aria-pressed={it.warrantyType === value} onClick={() => setItem(it.key, { warrantyType: value })}>
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
                   <div className="m-item__grid">
-                    <Field label="Warranty" error={err(p + "warrantyValue")} hint="Leave empty for no warranty.">
+                    <Field label={it.warrantyType === "service" ? "Service warranty period" : "Warranty period"} error={err(p + "warrantyValue")} hint={`Leave empty for no warranty. On the memo: "${it.warrantyValue ? `${it.warrantyValue} ${UNITS.find((u) => u.value === it.warrantyUnit)?.label}` : "2 Years"} ${it.warrantyType === "service" ? "Service Warranty" : "Warranty"}".`}>
                       {(fp) => (
                         <div className="m-period">
                           <input {...fp} className="input num" inputMode="numeric" value={it.warrantyValue} onChange={(e) => setItem(it.key, { warrantyValue: e.target.value.replace(/\D/g, "") })} placeholder="e.g. 2" />

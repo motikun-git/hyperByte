@@ -657,7 +657,7 @@ test('create a memo with two products, serial numbers, discount and payment', fu
         'startsAt' => '2026-01-10', 'internalNotes' => 'Paid in full', 'terms' => '',
         'items' => [
             ['productId' => $ids['gpu']['dbId'], 'quantity' => 1, 'serials' => ['GPU-SN-1'], 'unitPrice' => '25,500', 'warrantyValue' => 30, 'warrantyUnit' => 'day'],
-            ['productName' => 'Kingston 8GB DDR4', 'quantity' => 2, 'serials' => "RAM-A\nRAM-B", 'unitPrice' => 2000, 'warrantyValue' => 1, 'warrantyUnit' => 'month', 'warrantyNote' => '7 Days Replacement'],
+            ['productName' => 'Kingston 8GB DDR4', 'quantity' => 2, 'serials' => "RAM-A\nRAM-B", 'unitPrice' => 2000, 'warrantyValue' => 1, 'warrantyUnit' => 'month', 'warrantyNote' => '7 Days Replacement', 'warrantyType' => 'service'],
         ],
     ]);
     status($r, 201);
@@ -671,6 +671,10 @@ test('create a memo with two products, serial numbers, discount and payment', fu
     eq($w['items'][1]['expiresAt'], '2026-02-09T18:00:00Z', 'RAM: start + 1 month');
     eq($w['items'][1]['serials'], ['RAM-A', 'RAM-B']);
     eq($w['items'][1]['period'], '1 Month');
+    eq($w['items'][0]['typeLabel'], 'Warranty', 'plain warranty by default');
+    eq($w['items'][1]['typeLabel'], 'Service Warranty');
+    eq($w['memo']['items'][0]['line'], '30 Days Warranty', 'memo line: warranty');
+    eq($w['memo']['items'][1]['line'], '7 Days Replacement | 1 Month Service Warranty', 'memo line: service warranty');
     eq((float) $w['subtotal'], 29500.0);
     eq((float) $w['total'], 29000.0);
     eq($w['paymentLabel'], 'Cash');
@@ -726,6 +730,7 @@ test('public lookup shows every product with serials, never private data', funct
     eq(count($old['items']), 2);
     eq($old['items'][0]['slug'], $ids['gpu']['slug'], 'link to the product page');
     eq($old['items'][1]['note'], '7 Days Replacement');
+    eq($old['items'][1]['type'], 'Service Warranty', 'type shown publicly');
     ok(!str_contains(json_encode($old), 'Karim'), 'no customer name');
     $none = $guest->get('/api/warranty/HBW-AAAA-BBBB');
     status($none, 404);
@@ -782,8 +787,8 @@ test('editing a memo keeps its code, number and extended dates', function () use
 test('a memo downloads again exactly as it was issued', function () use ($admin, &$ids) {
     $id = $ids['w_old']['id'];
     $before = $admin->get("/api/admin/warranties/$id")['json']['warranty']['memo'];
-    eq($before['items'][0]['line'], '30 Days Service Warranty', 'service warranty line');
-    eq($before['items'][1]['line'], '1 Month Service Warranty');
+    eq($before['items'][0]['line'], '30 Days Warranty', 'warranty line');
+    eq($before['items'][1]['line'], '1 Month Warranty', 'type reset by the edit above (no warrantyType sent)');
     eq($before['seller']['name'], 'hyperByte');
     status($admin->put('/api/admin/settings', ['memoAddress' => 'Somewhere else, Dhaka']), 200);
     status($admin->post("/api/admin/warranties/$id/extend", ['days' => 5]), 200);

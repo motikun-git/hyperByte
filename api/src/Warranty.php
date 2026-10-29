@@ -11,6 +11,7 @@ final class Warranty
 {
     public const PAYMENT_METHODS = ['transfer' => 'Account transfer', 'cash' => 'Cash', 'mobile' => 'Mobile banking'];
     public const UNITS = ['day' => ['Day', 'Days'], 'month' => ['Month', 'Months'], 'year' => ['Year', 'Years']];
+    public const TYPES = ['warranty' => 'Warranty', 'service' => 'Service Warranty'];
     private const MAX_ITEMS = 30;
     private const MAX_QTY = 99;
 
@@ -159,6 +160,7 @@ final class Warranty
                 'serials' => self::serialList($it['serials']),
                 'period' => self::periodLabel($it['warranty_value'] === null ? null : (int) $it['warranty_value'], $it['warranty_unit']),
                 'note' => $it['warranty_note'],
+                'type' => self::TYPES[$it['warranty_type'] ?? 'warranty'] ?? 'Warranty',
                 'startsAt' => Util::iso($it['starts_at']),
                 'expiresAt' => Util::iso($it['expires_at']),
                 'status' => $status,
@@ -214,6 +216,8 @@ final class Warranty
                 'warrantyUnit' => $it['warranty_unit'],
                 'period' => self::periodLabel($it['warranty_value'] === null ? null : (int) $it['warranty_value'], $it['warranty_unit']),
                 'warrantyNote' => $it['warranty_note'],
+                'warrantyType' => isset(self::TYPES[$it['warranty_type'] ?? '']) ? $it['warranty_type'] : 'warranty',
+                'typeLabel' => self::TYPES[$it['warranty_type'] ?? 'warranty'] ?? 'Warranty',
                 'startsAt' => Util::iso($it['starts_at']),
                 'expiresAt' => Util::iso($it['expires_at']),
                 'remainingSeconds' => $expires === null ? 0 : max(0, $expires - $now),
@@ -257,10 +261,11 @@ final class Warranty
         return $view;
     }
 
-    /** "15 Days Replacement | 2 Years Service Warranty" */
-    public static function memoLine(string $note, string $period): string
+    /** "15 Days Replacement | 2 Years Service Warranty" or "... | 6 Months Warranty" */
+    public static function memoLine(string $note, string $period, string $type = 'warranty'): string
     {
-        return implode(' | ', array_filter([$note, $period !== '' ? "$period Service Warranty" : '']));
+        $label = self::TYPES[$type] ?? 'Warranty';
+        return implode(' | ', array_filter([$note, $period !== '' ? "$period $label" : '']));
     }
 
     /** Everything printed on the memo, frozen at the time it is saved. */
@@ -281,7 +286,7 @@ final class Warranty
                 'serials' => $it['serials'],
                 'unitPrice' => $it['unitPrice'],
                 'amount' => $it['amount'],
-                'line' => self::memoLine((string) $it['warrantyNote'], (string) $it['period']),
+                'line' => self::memoLine((string) $it['warrantyNote'], (string) $it['period'], (string) $it['warrantyType']),
             ], $v['items']),
             'subtotal' => $v['subtotal'],
             'discount' => $v['discount'],
@@ -511,6 +516,7 @@ final class Warranty
                     'warranty_value' => $value,
                     'warranty_unit' => $unit,
                     'warranty_note' => Util::line($raw['warrantyNote'] ?? '', 160),
+                    'warranty_type' => isset(self::TYPES[$raw['warrantyType'] ?? '']) ? $raw['warrantyType'] : 'warranty',
                     'starts_at' => Util::dbDate($start),
                     'expires_at' => $expires,
                     'updated_at' => Db::now(),

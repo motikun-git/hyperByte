@@ -249,7 +249,7 @@ function WarrantyItem({ item, now, big }) {
           ) : null}
           {item.period ? (
             <div>
-              <dt>Warranty</dt>
+              <dt>{item.type || "Warranty"}</dt>
               <dd>
                 {item.period}
                 {item.note ? `, ${item.note}` : ""}
