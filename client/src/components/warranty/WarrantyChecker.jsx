@@ -283,7 +283,7 @@ function WarrantyItem({ item, now, big }) {
             ))}
           </div>
         ) : null}
-        {status === "void" ? <p className="wresult__msg">This warranty is no longer valid. Please contact HyperByte for details.</p> : null}
+        {status === "void" ? <p className="wresult__msg">This warranty is no longer valid. Please contact hyperByte for details.</p> : null}
         {item.slug ? (
           <Link to={`/product/${item.slug}`} className="link small">
             View the product page

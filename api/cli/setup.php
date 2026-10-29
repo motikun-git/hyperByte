@@ -1,6 +1,6 @@
 <?php
 // Creates or updates the database tables and, if there is no admin yet,
-// asks for the first admin account. Run from the HyperByte folder:
+// asks for the first admin account. Run from the hyperByte folder:
 //   php api/cli/setup.php
 declare(strict_types=1);
 

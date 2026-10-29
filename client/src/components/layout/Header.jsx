@@ -73,12 +73,12 @@ export default function Header() {
 
           <div className="site-header__actions">
             {fb ? (
-              <a className="icon-btn hide-mobile" href={fb} target="_blank" rel="noopener noreferrer" aria-label="HyperByte on Facebook" data-pulse>
+              <a className="icon-btn hide-mobile" href={fb} target="_blank" rel="noopener noreferrer" aria-label="hyperByte on Facebook" data-pulse>
                 <Icon name="facebook" size={18} />
               </a>
             ) : null}
             {settings.instagramUrl ? (
-              <a className="icon-btn hide-mobile" href={settings.instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="HyperByte on Instagram" data-pulse>
+              <a className="icon-btn hide-mobile" href={settings.instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="hyperByte on Instagram" data-pulse>
                 <Icon name="instagram" size={17} />
               </a>
             ) : null}
@@ -200,7 +200,7 @@ function Drawer({ open, onClose, returnFocus }) {
           {item("/warranty", "Warranty check", "shieldCheck")}
           {item("/warranty-policy", "Warranty policy", "fileText")}
           {item("/custom-pc", "Custom PC build", "cpu")}
-          {item("/about", "About HyperByte", "store")}
+          {item("/about", "About hyperByte", "store")}
           {item("/#contact", "Contact us", "messageCircle")}
         </div>
 

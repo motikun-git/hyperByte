@@ -5,7 +5,7 @@ import { api } from "../lib/api.js";
 // Contact details are empty on purpose: buttons only appear once the owner
 // has entered real numbers and links in Admin -> Settings.
 const DEFAULTS = {
-  siteName: "HyperByte",
+  siteName: "hyperByte",
   tagline: "Second-hand PC hardware and laptops",
   logoUrl: "",
   heroTitle: "BUILD SMARTER. POWER BETTER.",
@@ -14,8 +14,8 @@ const DEFAULTS = {
     "Quality-checked second-hand PC components and laptops from Khilgaon, Dhaka. See real photos and full specs, then talk to us directly on WhatsApp or Facebook.",
   whatsappNumber: "",
   whatsappNumberCn: "",
-  facebookUrl: "",
-  messengerUrl: "",
+  facebookUrl: "https://www.facebook.com/hyperByteCn",
+  messengerUrl: "https://m.me/hyperByteCn",
   phone: "",
   email: "",
   address: "Khilgaon, Dhaka, Bangladesh",
@@ -27,7 +27,7 @@ const DEFAULTS = {
   showSoldProducts: true,
   warrantyTerms: "",
   metaDescription: "",
-  customBuildMessage: "Hello HyperByte, I would like to discuss a custom PC build. Please help me with compatible components and pricing.",
+  customBuildMessage: "Hello hyperByte, I would like to discuss a custom PC build. Please help me with compatible components and pricing.",
   warrantyPolicy: "",
   warrantyPolicyReviewed: false,
   preorderInfo: "",

@@ -1,6 +1,6 @@
-# HyperByte website
+# hyperByte website
 
-Product showcase and inquiry website for HyperByte (second-hand PC parts and laptops, Khilgaon, Dhaka).
+Product showcase and inquiry website for hyperByte (second-hand PC parts and laptops, Khilgaon, Dhaka).
 Customers browse products and ask on WhatsApp or Facebook. There is no cart, checkout or online payment.
 
 - **Website**: home (featured GPUs, recently added, available, pre-order, categories, custom PC build), products with
@@ -61,7 +61,7 @@ Open http://localhost/phpmyadmin, click **New**, name it `hyperbyte`, collation 
 ### 3. Create `api/.env`
 
 ```powershell
-cd C:\Users\ahasa\HyperByte
+cd C:\Users\ahasa\hyperByte
 copy api\.env.example api\.env
 notepad api\.env
 ```
@@ -78,14 +78,14 @@ php -r "echo bin2hex(random_bytes(24));"
 Window 1, the API:
 
 ```powershell
-cd C:\Users\ahasa\HyperByte
+cd C:\Users\ahasa\hyperByte
 php -S localhost:8000 dev-router.php
 ```
 
 Window 2, the website:
 
 ```powershell
-cd C:\Users\ahasa\HyperByte\client
+cd C:\Users\ahasa\hyperByte\client
 npm.cmd install
 npm.cmd run dev
 ```
@@ -132,7 +132,7 @@ To delete them on time without opening the dashboard, you can add a daily cron j
 ## Tests
 
 ```powershell
-cd C:\Users\ahasa\HyperByte
+cd C:\Users\ahasa\hyperByte
 php api\tests\run.php
 ```
 
@@ -146,11 +146,11 @@ and checks setup, login protection, products, photos, warranties, settings and m
 ### 1. Build the upload folder (on your PC)
 
 ```powershell
-cd C:\Users\ahasa\HyperByte\client
+cd C:\Users\ahasa\hyperByte\client
 npm.cmd run deploy
 ```
 
-This creates `C:\Users\ahasa\HyperByte\deploy\public_html` with the website, the API and an empty `uploads` folder.
+This creates `C:\Users\ahasa\hyperByte\deploy\public_html` with the website, the API and an empty `uploads` folder.
 
 ### 2. Database on the hosting
 

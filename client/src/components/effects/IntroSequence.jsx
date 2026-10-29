@@ -4,7 +4,7 @@
 import { useEffect, useRef, useState } from "react";
 import { MOTION } from "../../motion/config.js";
 
-const WORD = "HYPERBYTE";
+const WORD = "hyperByte";
 
 export function shouldPlayIntro(reduced) {
   if (reduced) return false;

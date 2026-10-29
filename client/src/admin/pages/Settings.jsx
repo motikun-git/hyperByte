@@ -114,7 +114,7 @@ export default function SettingsPage() {
     }
   };
 
-  const waTest = whatsappLink(form.whatsappNumber.replace(/\D/g, "").replace(/^01/, "8801"), "Test message from the HyperByte website settings.");
+  const waTest = whatsappLink(form.whatsappNumber.replace(/\D/g, "").replace(/^01/, "8801"), "Test message from the hyperByte website settings.");
 
   return (
     <form onSubmit={save} noValidate>
@@ -143,7 +143,7 @@ export default function SettingsPage() {
               )}
             </Field>
             {text("facebookUrl", "Facebook Page link", { optional: true, hint: "The full link, starting with https://" })}
-            {text("messengerUrl", "Messenger link", { optional: true, hint: "Like https://m.me/yourpage. Used for the Facebook chat buttons." })}
+            {text("messengerUrl", "Facebook Page message link", { optional: true, hint: "Like https://m.me/hyperByteCn. Facebook buttons open your Page's message box with this link." })}
             {text("instagramUrl", "Instagram link", { optional: true })}
             {text("youtubeUrl", "YouTube link", { optional: true })}
             {text("tiktokUrl", "TikTok link", { optional: true })}
@@ -192,7 +192,7 @@ export default function SettingsPage() {
             <h2 id="st-logo" className="a-card__title">
               Logo
             </h2>
-            <span className="a-card__note">Optional. Without a logo, the HyperByte mark and name are shown.</span>
+            <span className="a-card__note">Optional. Without a logo, the hyperByte mark and name are shown.</span>
           </div>
           <div className="row" style={{ "--gap": "14px", alignItems: "center" }}>
             <div className="a-logo-preview" style={{ minWidth: 180 }}>
@@ -270,7 +270,7 @@ export default function SettingsPage() {
             <Switch checked={form.warrantyPolicyReviewed} onChange={set("warrantyPolicyReviewed")} label="I have checked this policy and it is correct" />
             {text("warrantyTerms", "Default terms for new warranty codes", { rows: 5, hint: "Copied into each new warranty; shown on the warranty check page." })}
             {text("preorderPolicy", "Pre-order policy (page /pre-order)", { rows: 8 })}
-            {text("aboutText", "About HyperByte (page /about)", { rows: 5 })}
+            {text("aboutText", "About hyperByte (page /about)", { rows: 5 })}
             {text("customBuildMessage", "WhatsApp message for custom PC builds", { rows: 2 })}
           </div>
         </section>

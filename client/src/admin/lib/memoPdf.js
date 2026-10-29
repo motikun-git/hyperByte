@@ -251,7 +251,7 @@ function buildPdf(images, title) {
   push("%PDF-1.4\n%\xE2\xE3\xCF\xD3\n");
   obj(1, "<< /Type /Catalog /Pages 2 0 R >>");
   obj(2, `<< /Type /Pages /Count ${n} /Kids [${images.map((_, i) => `${pageObj(i)} 0 R`).join(" ")}] >>`);
-  obj(3, `<< /Title ${pdfString(title)} /Producer (HyperByte) >>`);
+  obj(3, `<< /Title ${pdfString(title)} /Producer (hyperByte) >>`);
   images.forEach((img, i) => {
     const p = pageObj(i);
     obj(p, `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /XObject << /Im0 ${p + 2} 0 R >> >> /Contents ${p + 1} 0 R >>`);
@@ -282,7 +282,7 @@ export async function downloadMemoPdf(w) {
   const canvases = await drawMemo(w, checkUrl);
   const images = [];
   for (const c of canvases) images.push({ width: c.width, height: c.height, bytes: await canvasJpeg(c) });
-  const name = `HyperByte-Memo-${w.invoiceNo || w.code}`;
+  const name = `hyperByte-Memo-${w.invoiceNo || w.code}`;
   const blob = buildPdf(images, name);
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");

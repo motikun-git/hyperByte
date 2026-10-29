@@ -3,7 +3,7 @@ import { usePageMeta } from "../lib/usePageMeta.js";
 import Icon from "../components/ui/Icon.jsx";
 
 export default function NotFound({ title = "This page drifted into a black hole", text = "The address may be wrong, or the page was moved." }) {
-  usePageMeta("Not found | HyperByte");
+  usePageMeta("Not found | hyperByte");
   return (
     <div className="container page not-found">
       <div className="not-found__hole" aria-hidden="true">

@@ -108,7 +108,7 @@ function Shell({ children }) {
         <div className="a-auth__brand">
           <LogoMark size={44} />
           <div>
-            <h1 className="a-title">Set up HyperByte</h1>
+            <h1 className="a-title">Set up hyperByte</h1>
             <p className="faint small">First-time setup of the admin panel.</p>
           </div>
         </div>

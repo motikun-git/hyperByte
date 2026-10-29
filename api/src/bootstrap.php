@@ -12,7 +12,7 @@ if (!defined('HB_API_DIR')) {
 
 if (PHP_VERSION_ID < 80100) {
     http_response_code(500);
-    exit('HyperByte needs PHP 8.1 or newer. Change the PHP version in your hosting control panel.');
+    exit('hyperByte needs PHP 8.1 or newer. Change the PHP version in your hosting control panel.');
 }
 
 require_once __DIR__ . '/Env.php';

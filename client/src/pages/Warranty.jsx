@@ -10,7 +10,7 @@ export default function Warranty() {
   const { settings } = useSettings();
   const [params, setParams] = useSearchParams();
   const code = params.get("code") || "";
-  usePageMeta(`Warranty check | ${settings.siteName}`, "Enter your HyperByte warranty code to see the product, the warranty period and the time left.");
+  usePageMeta(`Warranty check | ${settings.siteName}`, "Enter your hyperByte warranty code to see the product, the warranty period and the time left.");
   const wa = whatsappLink(mainWhatsapp(settings), `${generalMessage} It is about my warranty.`);
 
   return (
@@ -35,7 +35,7 @@ export default function Warranty() {
           <Icon name="wrench" size={22} strokeWidth={1.6} />
           <div>
             <h2 className="h3">Need to make a claim?</h2>
-            <p className="muted small">Bring the item and your code to HyperByte, or message us first so we can help faster.</p>
+            <p className="muted small">Bring the item and your code to hyperByte, or message us first so we can help faster.</p>
             {wa ? (
               <a className="btn btn--whatsapp btn--sm" href={wa} target="_blank" rel="noopener noreferrer">
                 <Icon name="whatsapp" size={17} /> Message us

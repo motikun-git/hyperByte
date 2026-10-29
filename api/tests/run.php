@@ -1,7 +1,7 @@
 <?php
-// End-to-end tests for the HyperByte API. They start a private server with a
+// End-to-end tests for the hyperByte API. They start a private server with a
 // temporary SQLite database, so your real data is never touched. Run from the
-// HyperByte folder:
+// hyperByte folder:
 //   php api/tests/run.php
 declare(strict_types=1);
 
@@ -21,7 +21,7 @@ $projectRoot = dirname(__DIR__, 2);
 $tmp = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'hyperbyte-test-' . bin2hex(random_bytes(4));
 mkdir($tmp . '/uploads', 0777, true);
 mkdir($tmp . '/dist', 0777, true);
-file_put_contents($tmp . '/dist/index.html', "<!doctype html><html><head><title>HyperByte</title>\n<meta name=\"hb-seo\" content=\"\" /></head><body><div id=\"root\"></div></body></html>");
+file_put_contents($tmp . '/dist/index.html', "<!doctype html><html><head><title>hyperByte</title>\n<meta name=\"hb-seo\" content=\"\" /></head><body><div id=\"root\"></div></body></html>");
 
 $port = 18000 + random_int(0, 2000);
 $base = "http://127.0.0.1:$port";
@@ -193,7 +193,7 @@ $jpeg = base64_decode('/9j/4AAQSkZJRgABAQEAYABgAAD//gA7Q1JFQVRPUjogZ2QtanBlZyB2M
 $admin = new Client($base);
 $ids = [];
 
-echo "\nHyperByte API tests\n\n";
+echo "\nhyperByte API tests\n\n";
 
 // ------------------------------------------------------------------ setup and login
 
@@ -640,7 +640,7 @@ test('inquiries: create, update, search, delete', function () use ($admin, $gues
 test('new settings: policy pages and custom build message', function () use ($admin, $guest) {
     $s = $guest->get('/api/settings')['json']['settings'];
     ok(str_contains($s['warrantyPolicy'], '## What the warranty covers'), 'draft policy');
-    ok(str_starts_with($s['customBuildMessage'], 'Hello HyperByte'), 'custom build message');
+    ok(str_starts_with($s['customBuildMessage'], 'Hello hyperByte'), 'custom build message');
     eq($s['instagramUrl'], 'https://www.instagram.com/hyperbyte_cn', 'instagram');
     ok(!array_key_exists('soldPhotoPolicy', $s), 'photo policy is admin-only');
     status($admin->put('/api/admin/settings', ['aboutText' => "We sell used GPUs.\n\n- Tested"]), 200);
@@ -845,7 +845,7 @@ test('settings are validated and cleaned', function () use ($admin, $guest) {
     status($admin->put('/api/admin/settings', ['whatsappNumber' => '', 'whatsappNumberCn' => '8613812345678']), 200, 'BD number is optional');
     $r = $admin->put('/api/admin/settings', [
         'whatsappNumber' => '017-1234 5678', 'facebookUrl' => 'facebook.com/hyperbyte.bd', 'heroPhrases' => "ONE\nTWO\n\n",
-        'heroTitle' => '  UPGRADE   YOUR WORLD. ', 'siteName' => 'HyperByte',
+        'heroTitle' => '  UPGRADE   YOUR WORLD. ', 'siteName' => 'hyperByte',
     ]);
     status($r, 200);
     $s = $guest->get('/api/settings')['json']['settings'];
@@ -963,7 +963,7 @@ echo "\nWebsite pages\n";
 test('product pages get their own title and preview tags', function () use ($guest, &$ids) {
     $r = $guest->get('/product/' . $ids['gpu']['slug']);
     status($r, 200);
-    ok(str_contains($r['text'], '<title>MSI RTX 3060 Ventus 2X 12GB | HyperByte</title>'), 'title');
+    ok(str_contains($r['text'], '<title>MSI RTX 3060 Ventus 2X 12GB | hyperByte</title>'), 'title');
     ok(str_contains($r['text'], 'og:image" content="http://127.0.0.1'), 'absolute og:image');
     ok(str_contains($r['text'], 'Product ID HB-1001'), 'description');
     status($guest->get('/product/' . $ids['hidden']['slug']), 404, 'unpublished product page');

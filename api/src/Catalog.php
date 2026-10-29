@@ -257,7 +257,7 @@ final class Catalog
             Db::all(self::SELECT . " WHERE p.is_published = 1 AND $where ORDER BY " . ($order ?: $newest) . " LIMIT $limit", $params)
         );
         return [
-            // Graphics cards first: they are HyperByte's main products.
+            // Graphics cards first: they are hyperByte's main products.
             'featured' => $q("p.is_featured = 1 AND p.status IN ('available','preorder')", [], 10, "(c.slug = 'gpu') DESC, $newest"),
             'gpus' => $q("c.slug = 'gpu' AND p.status IN ('available','preorder')", [], 8, "p.is_featured DESC, $newest"),
             'available' => $q("p.status = 'available'", [], 12),

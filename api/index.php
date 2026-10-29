@@ -1,5 +1,5 @@
 <?php
-// HyperByte API. Every request to /api/... is sent here by api/.htaccess
+// hyperByte API. Every request to /api/... is sent here by api/.htaccess
 // (or by dev-router.php when running locally).
 declare(strict_types=1);
 
@@ -503,7 +503,7 @@ try {
     }
     Response::json(['message' => $e->getMessage()] + $extra, $e->status);
 } catch (PDOException $e) {
-    error_log('[HyperByte] Database error: ' . $e->getMessage());
+    error_log('[hyperByte] Database error: ' . $e->getMessage());
     $notInstalled = str_contains($e->getMessage(), 'no such table') || str_contains($e->getMessage(), "doesn't exist") || str_contains($e->getMessage(), 'Base table or view not found');
     $connection = str_contains($e->getMessage(), 'SQLSTATE[HY000] [') || str_contains($e->getMessage(), 'could not find driver');
     $message = $notInstalled
@@ -515,7 +515,7 @@ try {
     }
     Response::json($body, $notInstalled || $connection ? 503 : 500);
 } catch (Throwable $e) {
-    error_log('[HyperByte] ' . get_class($e) . ': ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+    error_log('[hyperByte] ' . get_class($e) . ': ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
     $body = ['message' => 'Something went wrong on the server. Please try again.'];
     if (Env::bool('APP_DEBUG')) {
         $body['debug'] = $e->getMessage() . ' (' . basename($e->getFile()) . ':' . $e->getLine() . ')';

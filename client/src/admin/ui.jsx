@@ -12,7 +12,7 @@ export const useAdminApi = (path) => useApi(path, adminApi);
 
 export function useDocTitle(title) {
   useEffect(() => {
-    document.title = `${title} | HyperByte admin`;
+    document.title = `${title} | hyperByte admin`;
   }, [title]);
 }
 

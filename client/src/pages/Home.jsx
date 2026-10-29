@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "../lib/router.jsx";
 import { useApi } from "../lib/useApi.js";
 import { qs } from "../lib/api.js";
@@ -102,7 +102,7 @@ const PROMO_PARTS = [
   ["gpu", "GPU"],
   ["fan", "Cooler"],
   ["psu", "PSU"],
-  ["motherboard", "Motherboard"],
+  ["motherboard", "Mother\u00ADboard"],
   ["laptop", "Laptop"],
   ["other", "Others"],
 ];
@@ -115,7 +115,7 @@ function PreorderPromo() {
           <div className="pre-promo__copy">
             <SectionHeading id="promo-title" text="Pre-order any part, pre-owned or new" />
             <p className="muted">
-              Not in stock? List the parts you want, choose pre-owned or new for each, and send the ready message to our Bangladesh or China admin on WhatsApp.
+              Not in stock? List the parts you want, choose pre-owned or new for each, and send the ready message to us on Facebook or WhatsApp.
             </p>
             <Link to="/pre-order" className="btn btn--primary btn--lg" data-pulse>
               Start a pre-order <Icon name="arrowRight" size={18} className="icon-arrow" />
@@ -229,7 +229,7 @@ function Available({ data, loading, failed }) {
 
 function EmptyStock({ category }) {
   const { settings } = useSettings();
-  const wa = whatsappLink(mainWhatsapp(settings), `Hello HyperByte, I am looking for ${category ? `a ${category.name}` : "a PC part"}. What do you have?`);
+  const wa = whatsappLink(mainWhatsapp(settings), `Hello hyperByte, I am looking for ${category ? `a ${category.name}` : "a PC part"}. What do you have?`);
   return (
     <div className="empty">
       <Icon name="package" size={34} strokeWidth={1.5} />
@@ -311,7 +311,41 @@ function Recent({ items }) {
 // ------------------------------------------------------------------ browse by category
 
 function BrowseCategories({ categories }) {
+  const strip = useRef(null);
+  const { reduced } = useMotion();
+  const paused = useRef(false);
+
+  // Every 3 seconds the row moves one tile to the left (and starts again at the end).
+  // It stops while the visitor touches, hovers or focuses it, and when motion is off.
+  useEffect(() => {
+    const el = strip.current;
+    if (!el || reduced) return undefined;
+    let visible = true;
+    const io = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+    });
+    io.observe(el);
+    const timer = window.setInterval(() => {
+      if (paused.current || !visible || document.hidden) return;
+      const tile = el.querySelector(".ctile");
+      if (!tile) return;
+      const step = tile.getBoundingClientRect().width + parseFloat(getComputedStyle(el).columnGap || "10");
+      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4;
+      el.scrollTo({ left: atEnd ? 0 : el.scrollLeft + step, behavior: "smooth" });
+    }, 3000);
+    return () => {
+      window.clearInterval(timer);
+      io.disconnect();
+    };
+  }, [reduced, categories]);
+
   if (!categories?.length) return null;
+  const hold = () => {
+    paused.current = true;
+  };
+  const release = () => {
+    paused.current = false;
+  };
   return (
     <section className="section" aria-labelledby="browse-title">
       <div className="container">
@@ -321,27 +355,30 @@ function BrowseCategories({ categories }) {
             All products <Icon name="arrowRight" size={17} />
           </Link>
         </div>
-        <ul className="cat-grid" role="list">
+        <ul
+          ref={strip}
+          className="cat-strip"
+          role="list"
+          onPointerEnter={hold}
+          onPointerLeave={release}
+          onTouchStart={hold}
+          onTouchEnd={() => window.setTimeout(release, 4000)}
+          onFocus={hold}
+          onBlur={release}
+        >
           {categories.map((c) => {
             const n = c.available + c.preorder;
             return (
-              <li key={c.slug} className="cat-card">
-                <Link to={`/products?category=${encodeURIComponent(c.slug)}`} className="cat-card__link" data-pulse>
-                  <span className="cat-card__icon">
-                    <CategoryIcon type={c.icon} size={26} strokeWidth={1.5} />
+              <li key={c.slug} className="ctile">
+                <Link to={`/products?category=${encodeURIComponent(c.slug)}`} data-pulse>
+                  <span className="ctile__icon">
+                    <CategoryIcon type={c.icon} size={22} strokeWidth={1.6} />
                   </span>
-                  <span className="cat-card__name">{c.name}</span>
-                  <span className="cat-card__count">{n ? `${n} for sale` : "Ask us"}</span>
+                  <span className="ctile__name" lang="en">
+                    {c.name}
+                  </span>
+                  {n ? <span className="ctile__count num">{n} for sale</span> : null}
                 </Link>
-                {c.children?.some((s) => s.total > 0) ? (
-                  <span className="cat-card__subs">
-                    {c.children.filter((s) => s.total > 0).map((s) => (
-                      <Link key={s.slug} to={`/products?category=${encodeURIComponent(c.slug)}&sub=${encodeURIComponent(s.slug)}`}>
-                        {s.name}
-                      </Link>
-                    ))}
-                  </span>
-                ) : null}
               </li>
             );
           })}
@@ -382,7 +419,7 @@ function CustomBuild() {
   );
 }
 
-// ------------------------------------------------------------------ why HyperByte
+// ------------------------------------------------------------------ why hyperByte
 
 const REASONS = [
   { icon: "clipboardCheck", title: "Checked before listing", text: "We test parts before they go online and write down what was checked." },
@@ -400,7 +437,7 @@ function Why() {
       </BigWord>
       <div className="container why">
         <div className="why__intro">
-          <SectionHeading id="why-title" text="Why HyperByte" />
+          <SectionHeading id="why-title" text="Why hyperByte" />
           <p className="lede">Buying used hardware should not feel like a gamble. This is how we keep it simple and honest.</p>
         </div>
         <ul className="why-list" role="list">

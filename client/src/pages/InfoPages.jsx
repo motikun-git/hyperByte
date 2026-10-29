@@ -58,11 +58,11 @@ function ContactCard({ message, title = "Questions?", text = "Message us. We usu
 
 export function WarrantyPolicy() {
   const { settings } = useSettings();
-  usePageMeta(`Warranty policy | ${settings.siteName}`, "What the HyperByte warranty covers, how the period is calculated and how to make a claim.");
+  usePageMeta(`Warranty policy | ${settings.siteName}`, "What the hyperByte warranty covers, how the period is calculated and how to make a claim.");
   return (
     <InfoLayout
       title="Warranty policy"
-      lede="How warranties work for items bought from HyperByte."
+      lede="How warranties work for items bought from hyperByte."
       aside={
         <>
           <div className="panel info-card">
@@ -72,7 +72,7 @@ export function WarrantyPolicy() {
               <Icon name="shieldCheck" size={18} /> Warranty check
             </Link>
           </div>
-          <ContactCard message="Hello HyperByte, I have a question about a warranty." title="Need to make a claim?" text="Message us with your warranty code and what is wrong." />
+          <ContactCard message="Hello hyperByte, I have a question about a warranty." title="Need to make a claim?" text="Message us with your warranty code and what is wrong." />
         </>
       }
     >
@@ -88,13 +88,13 @@ export function WarrantyPolicy() {
 
 export function PreorderInfo() {
   const { settings } = useSettings();
-  usePageMeta(`Pre-order information | ${settings.siteName}`, "How pre-orders work at HyperByte. Nothing is confirmed until you agree, and no payment is taken on this website.");
+  usePageMeta(`Pre-order information | ${settings.siteName}`, "How pre-orders work at hyperByte. Nothing is confirmed until you agree, and no payment is taken on this website.");
   const pre = useApi("/products?status=preorder&limit=8");
   return (
     <InfoLayout
       title="Pre-order information"
       lede="Looking for something that is not in stock? We may be able to get it for you."
-      aside={<ContactCard message="Hello HyperByte, I would like to pre-order an item. Can you help me find it?" title="Ask for an item" text="Tell us the exact model you want. We will check and get back to you." />}
+      aside={<ContactCard message="Hello hyperByte, I would like to pre-order an item. Can you help me find it?" title="Ask for an item" text="Tell us the exact model you want. We will check and get back to you." />}
     >
       <Prose text={settings.preorderInfo} className="info-prose" />
       {pre.data?.items?.length ? (
@@ -148,7 +148,7 @@ export function About() {
               </a>
             ) : null}
           </div>
-          <ContactCard message="Hello HyperByte, I have a question." />
+          <ContactCard message="Hello hyperByte, I have a question." />
         </>
       }
     >
@@ -179,7 +179,7 @@ const BUILD_PARTS = [
 
 export function CustomPc() {
   const { settings } = useSettings();
-  usePageMeta(`Custom PC build | ${settings.siteName}`, "Plan an AM5 or DDR5 PC with HyperByte: choose your components, pre-owned or new, add your budget and send the list on WhatsApp or Facebook.");
+  usePageMeta(`Custom PC build | ${settings.siteName}`, "Plan an AM5 or DDR5 PC with hyperByte: choose your components, pre-owned or new, add your budget and send the list on WhatsApp or Facebook.");
   const [budget, setBudget] = useState("");
   const [notes, setNotes] = useState("");
 
@@ -202,7 +202,7 @@ export function CustomPc() {
         title="Choose your components"
         hint="Fill in what you already know. Leave a part empty if you want our suggestion for it."
         parts={BUILD_PARTS}
-        intro="Hello HyperByte, I want a custom PC build (AM5 / DDR5) with the component"
+        intro="Hello hyperByte, I want a custom PC build (AM5 / DDR5) with the component"
         extra={[budget.trim() ? `Budget: ${budget.trim()}` : "", notes.trim() ? `Notes: ${notes.trim()}` : ""]}
       >
         <div className="build-budget">

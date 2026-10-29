@@ -34,7 +34,7 @@ export default function Login({ notice, onDone }) {
         <div className="a-auth__brand">
           <LogoMark size={44} />
           <div>
-            <h1 className="a-title">HyperByte admin</h1>
+            <h1 className="a-title">hyperByte admin</h1>
             <p className="faint small">Log in to manage products and warranties.</p>
           </div>
         </div>

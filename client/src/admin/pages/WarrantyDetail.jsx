@@ -78,7 +78,7 @@ export default function WarrantyDetail({ id }) {
   }
 
   const link = `${window.location.origin}/warranty?code=${w.code}`;
-  const message = `Hello ${w.customerName}, your HyperByte warranty code is ${w.code}${w.invoiceNo ? ` (memo ${w.invoiceNo})` : ""}. Check your warranty any time: ${link}`;
+  const message = `Hello ${w.customerName}, your hyperByte warranty code is ${w.code}${w.invoiceNo ? ` (memo ${w.invoiceNo})` : ""}. Check your warranty any time: ${link}`;
   const customerWa = toWaNumber(w.customerPhone);
   const memoVoid = w.status === "void" && w.voidedAt;
 

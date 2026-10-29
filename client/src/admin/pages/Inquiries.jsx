@@ -120,7 +120,7 @@ export default function Inquiries() {
                       </select>
                     </label>
                     {wa ? (
-                      <a className="a-iconbtn" href={whatsappLink(wa, `Hello ${item.customerName || ""}, this is HyperByte about your request for ${item.productName} (${item.ref}).`.replace("Hello ,", "Hello,"))} target="_blank" rel="noopener noreferrer" aria-label={`Message ${item.customerName || "customer"} on WhatsApp`}>
+                      <a className="a-iconbtn" href={whatsappLink(wa, `Hello ${item.customerName || ""}, this is hyperByte about your request for ${item.productName} (${item.ref}).`.replace("Hello ,", "Hello,"))} target="_blank" rel="noopener noreferrer" aria-label={`Message ${item.customerName || "customer"} on WhatsApp`}>
                         <Icon name="whatsapp" size={16} />
                       </a>
                     ) : null}

@@ -94,19 +94,19 @@ $meta = [
 
 if ($path === '/products') {
     $meta['title'] = "Products | $site";
-    $meta['description'] = 'Browse available and pre-order second-hand PC parts and laptops at HyperByte: graphics cards, processors, RAM, SSDs, motherboards, power supplies and more.';
+    $meta['description'] = 'Browse available and pre-order second-hand PC parts and laptops at hyperByte: graphics cards, processors, RAM, SSDs, motherboards, power supplies and more.';
 } elseif ($path === '/warranty') {
     $meta['title'] = "Warranty check | $site";
-    $meta['description'] = 'Enter your HyperByte warranty code to see the product, the warranty period and how much time is left.';
+    $meta['description'] = 'Enter your hyperByte warranty code to see the product, the warranty period and how much time is left.';
 } elseif ($path === '/warranty-policy') {
     $meta['title'] = "Warranty policy | $site";
-    $meta['description'] = 'What the HyperByte warranty covers, how the warranty period is calculated and how to make a claim.';
+    $meta['description'] = 'What the hyperByte warranty covers, how the warranty period is calculated and how to make a claim.';
 } elseif ($path === '/pre-order') {
     $meta['title'] = "Pre-order | $site";
-    $meta['description'] = 'Pre-order pre-owned or new PC parts and laptops through HyperByte: list what you want and send it on WhatsApp or Facebook.';
+    $meta['description'] = 'Pre-order pre-owned or new PC parts and laptops through hyperByte: list what you want and send it on WhatsApp or Facebook.';
 } elseif ($path === '/custom-pc') {
     $meta['title'] = "Custom PC build | $site";
-    $meta['description'] = 'Plan an AM5 or DDR5 PC with HyperByte: choose your components, pre-owned or new, add your budget and send the list on WhatsApp or Facebook.';
+    $meta['description'] = 'Plan an AM5 or DDR5 PC with hyperByte: choose your components, pre-owned or new, add your budget and send the list on WhatsApp or Facebook.';
 } elseif ($path === '/about') {
     $meta['title'] = "About | $site";
     $meta['description'] = (string) $settings['metaDescription'];

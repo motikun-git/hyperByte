@@ -94,10 +94,13 @@ main {
   gap: 10px;
 }
 .logo__word {
-  font-family: var(--font-display);
+  /* The wordmark: League Spartan Bold, as on the memo. */
+  font-family: "HB Logo", var(--font-display);
   font-weight: 700;
-  font-size: 18px;
-  letter-spacing: 0.01em;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  transform: translateY(1px);
 }
 .logo__img {
   height: 36px;
@@ -2733,4 +2736,259 @@ main {
 .motion-off .panel,
 .motion-off .pcard__frame {
   animation: none;
+}
+
+/* ------------------------------------------------------------------ floating send button (pre-order, custom PC) */
+.has-sendbar .site-footer {
+  padding-bottom: calc(90px + env(safe-area-inset-bottom));
+}
+.sendfab {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 40;
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+  pointer-events: none;
+}
+.sendfab > * {
+  pointer-events: auto;
+}
+.sendfab__btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 0 22px 0 18px;
+  border: 0;
+  border-radius: var(--pill);
+  background: var(--grad);
+  color: #fff;
+  font-weight: 800;
+  font-size: 15.5px;
+  box-shadow: 0 14px 34px -10px rgba(99, 102, 241, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+  cursor: pointer;
+  transition: transform var(--dur-fast), box-shadow var(--dur-fast);
+}
+.sendfab__btn:hover {
+  transform: translateY(-2px);
+}
+.sendfab__btn:active {
+  transform: translateY(0);
+}
+.sendfab__count {
+  position: absolute;
+  top: -6px;
+  right: -4px;
+  display: grid;
+  place-items: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: var(--pill);
+  background: #22d3ee;
+  color: #04121a;
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 0 0 0 2px var(--void);
+}
+.sendfab__nudge {
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #3a0d12;
+  border: 1px solid rgba(248, 113, 113, 0.7);
+  color: #fecaca;
+  font-size: 13.5px;
+  font-weight: 700;
+}
+.send-dialog {
+  display: grid;
+  gap: 12px;
+}
+.send-dialog__note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--ok);
+  font-size: 14px;
+  font-weight: 600;
+}
+.send-dialog__text {
+  min-height: 180px;
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+.send-dialog__label {
+  margin-right: auto;
+  color: var(--text-2);
+  font-size: 14px;
+  font-weight: 700;
+}
+/* The send buttons stay at the bottom right of the popup, even when it scrolls. */
+.modal:has(.send-dialog) .modal__foot {
+  position: sticky;
+  bottom: -24px;
+  margin: 16px -24px -24px;
+  padding: 14px 24px calc(16px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line);
+  background: var(--navy-2);
+}
+.send-dialog__foot {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.send-opt {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 6px 16px 6px 6px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--pill);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  font-weight: 800;
+  font-size: 15px;
+  text-decoration: none;
+  transition: border-color var(--dur-fast), background-color var(--dur-fast), transform var(--dur-fast);
+}
+.send-opt:hover {
+  transform: translateY(-1px);
+}
+.send-opt__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #fff;
+}
+.send-opt--fb .send-opt__icon {
+  background: linear-gradient(135deg, #00b2ff, #006aff 55%, #a334fa);
+}
+.send-opt--wa .send-opt__icon {
+  background: var(--whatsapp);
+}
+.send-opt--fb:hover {
+  border-color: rgba(0, 132, 255, 0.7);
+  background: rgba(0, 132, 255, 0.1);
+}
+.send-opt--wa:hover {
+  border-color: rgba(37, 211, 102, 0.7);
+  background: rgba(37, 211, 102, 0.1);
+}
+@media (max-width: 420px) {
+  .send-dialog__label {
+    flex-basis: 100%;
+    text-align: right;
+  }
+}
+
+/* ------------------------------------------------------------------ icon tiles (pre-order promo, categories) */
+.pre-promo__parts a span,
+.ctile__name {
+  max-width: 100%;
+  text-align: center;
+  line-height: 1.2;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  overflow-wrap: break-word;
+}
+@media (max-width: 520px) {
+  .pre-promo__parts {
+    gap: 8px;
+  }
+  .pre-promo__parts a {
+    padding: 14px 4px;
+    font-size: 12.5px;
+  }
+}
+
+.cat-strip {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 2px 0 6px;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.cat-strip::-webkit-scrollbar {
+  display: none;
+}
+.ctile {
+  flex: 0 0 calc((100% - 30px) / 4);
+  scroll-snap-align: start;
+}
+@media (min-width: 720px) {
+  .ctile {
+    flex-basis: calc((100% - 50px) / 6);
+  }
+}
+@media (min-width: 1100px) {
+  .ctile {
+    flex-basis: calc((100% - 70px) / 8);
+  }
+}
+.ctile a {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 8px;
+  height: 100%;
+  padding: 16px 6px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(7, 8, 18, 0.45);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 13.5px;
+  text-decoration: none;
+  transition: border-color var(--dur-fast), background-color var(--dur-fast);
+}
+.ctile a:hover,
+.ctile a:focus-visible {
+  border-color: rgba(167, 139, 250, 0.7);
+  background: rgba(139, 92, 246, 0.14);
+}
+.ctile__icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(139, 92, 246, 0.16);
+  color: #c4b5fd;
+}
+.ctile__count {
+  color: var(--text-3);
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+@media (max-width: 520px) {
+  .cat-strip {
+    gap: 8px;
+  }
+  .ctile {
+    flex-basis: calc((100% - 24px) / 4);
+  }
+  .ctile a {
+    padding: 14px 4px 12px;
+    font-size: 12px;
+  }
+  .ctile__icon {
+    width: 40px;
+    height: 40px;
+  }
 }

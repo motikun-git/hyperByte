@@ -24,18 +24,26 @@ const statusWord = (status) => ({ available: "Available", preorder: "Pre-order",
 
 export function productMessage(product) {
   if (product.status === "sold") {
-    return `Hello HyperByte, I saw ${product.name} (ID: ${product.id}) is sold. Do you have something similar?`;
+    return `Hello hyperByte, I saw ${product.name} (ID: ${product.id}) is sold. Do you have something similar?`;
   }
   if (product.status === "unavailable") {
-    return `Hello HyperByte, I am interested in ${product.name} (ID: ${product.id}). Will it be available again?`;
+    return `Hello hyperByte, I am interested in ${product.name} (ID: ${product.id}). Will it be available again?`;
   }
-  return `Hello HyperByte, I am interested in ${product.name} (ID: ${product.id}). Current status: ${statusWord(product.status)}. Please provide more details.`;
+  return `Hello hyperByte, I am interested in ${product.name} (ID: ${product.id}). Current status: ${statusWord(product.status)}. Please provide more details.`;
 }
 
-export const generalMessage = "Hello HyperByte, I have a question about your products.";
+export const generalMessage = "Hello hyperByte, I have a question about your products.";
 
 /** Messenger link if set, otherwise the Facebook Page. */
 export const facebookChat = (settings) => settings?.messengerUrl || settings?.facebookUrl || "";
+
+/**
+ * The Facebook Page message link (m.me), the same on phones and computers.
+ * Messenger cannot take the text in the link reliably, so it is copied first.
+ */
+export function messengerLink(url) {
+  return url || "";
+}
 
 export function mapLink(settings) {
   if (settings?.mapUrl) return settings.mapUrl;
@@ -45,7 +53,7 @@ export function mapLink(settings) {
 
 /** The text behind "Copy product details", built from the real product data. */
 export function productDetails(product, settings, url) {
-  const lines = ["HyperByte — Product Inquiry", ""];
+  const lines = ["hyperByte — Product Inquiry", ""];
   lines.push(`Product: ${product.name}`);
   lines.push(`Product ID: ${product.id}`);
   if (product.category) lines.push(`Category: ${product.category.name}${product.subcategory ? ` / ${product.subcategory.name}` : ""}`);
@@ -62,13 +70,13 @@ export function productDetails(product, settings, url) {
   if (mainWhatsapp(settings)) contact.push(`WhatsApp: +${mainWhatsapp(settings)}`);
   if (settings?.facebookUrl) contact.push(`Facebook: ${settings.facebookUrl}`);
   if (contact.length) lines.push(...["", ...contact]);
-  lines.push("", "Please contact HyperByte for current availability and further details.");
+  lines.push("", "Please contact hyperByte for current availability and further details.");
   return lines.join("\n");
 }
 
 /** WhatsApp text for a custom PC build, with the optional details the visitor filled in. */
 export function customBuildText(settings, { budget = "", use = "", notes = "" } = {}) {
-  const base = settings?.customBuildMessage || "Hello HyperByte, I would like to discuss a custom PC build. Please help me with compatible components and pricing.";
+  const base = settings?.customBuildMessage || "Hello hyperByte, I would like to discuss a custom PC build. Please help me with compatible components and pricing.";
   const extra = [];
   if (budget.trim()) extra.push(`Budget: ${budget.trim()}`);
   if (use.trim()) extra.push(`Main use: ${use.trim()}`);

@@ -51,7 +51,7 @@ export default function AdminLayout({ children }) {
         <Link to="/admin" className="a-brand">
           <LogoMark size={30} />
           <span>
-            HyperByte <span className="a-brand__tag">admin</span>
+            hyperByte <span className="a-brand__tag">admin</span>
           </span>
         </Link>
         <nav className="a-nav">{NAV.map((item) => navLink(item, "a-nav__link"))}</nav>
@@ -78,7 +78,7 @@ export default function AdminLayout({ children }) {
         <Link to="/admin" className="a-brand">
           <LogoMark size={28} />
           <span>
-            HyperByte <span className="a-brand__tag">admin</span>
+            hyperByte <span className="a-brand__tag">admin</span>
           </span>
         </Link>
         <a className="icon-btn" href="/" target="_blank" rel="noopener noreferrer" aria-label="View website">

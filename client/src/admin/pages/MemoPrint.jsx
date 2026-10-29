@@ -1,4 +1,4 @@
-// The sales memo, in the layout of HyperByte's memo template: a preview on
+// The sales memo, in the layout of hyperByte's memo template: a preview on
 // screen and a "Download PDF" button that saves it as a PDF file.
 import { useEffect, useState } from "react";
 import { useToast } from "../../context/ToastContext.jsx";

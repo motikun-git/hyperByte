@@ -1,19 +1,21 @@
 // The parts list builder used on the Pre-order and Custom PC build pages:
-// the visitor types the parts they want, marks each as pre-owned or new,
-// and gets a ready message to send to HyperByte on WhatsApp (Bangladesh or
-// China admin) or Facebook. Nothing is ordered or paid on the website.
-import { useState } from "react";
+// the visitor types the parts they want and marks each as pre-owned or new.
+// A bar fixed to the bottom of the screen opens a popup with the ready
+// message (already copied), to send on Facebook Messenger or WhatsApp
+// (Admin CN). Nothing is ordered or paid on the website.
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useSettings } from "../../context/SettingsContext.jsx";
 import { useToast } from "../../context/ToastContext.jsx";
 import { copyText } from "../../lib/clipboard.js";
-import { facebookChat, whatsappLink } from "../../lib/contact.js";
+import { facebookChat, messengerLink, whatsappLink } from "../../lib/contact.js";
+import Modal from "../ui/Modal.jsx";
 import Icon, { CategoryIcon } from "../ui/Icon.jsx";
 
 const STEPS = [
   { icon: "pencil", text: "Fill in the component boxes" },
-  { icon: "sparkles", text: "Press Generate message" },
-  { icon: "copy", text: "Copy the generated text" },
-  { icon: "send", text: "Send it to our Facebook Page inbox or WhatsApp" },
+  { icon: "send", text: "Press Send my list (bottom right)" },
+  { icon: "messageCircle", text: "Send it on Facebook or WhatsApp" },
 ];
 
 let nextId = 1;
@@ -36,22 +38,13 @@ export function buildPartsMessage(parts, rows, { intro, extra = [] }) {
   return `${intro}${many ? "s" : ""} given below:\n\n${lines.join("\n")}${extraText}\n\nPlease let me know the availability, price and when ${many ? "they" : "it"} can arrive.`;
 }
 
-export default function PartsBuilder({ id, title, hint, parts, intro, extra = [], children, agreement = null, after = null }) {
-  const { settings } = useSettings();
-  const toast = useToast();
+export default function PartsBuilder({ id, title, hint, parts, intro, extra = [], children, agreement = null }) {
   const [rows, setRows] = useState(() => parts.map((p) => newRow(p.key)));
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
-  const [stale, setStale] = useState(false);
-  const outputId = `${id}-message`;
+  const [open, setOpen] = useState(false);
+  const [nudge, setNudge] = useState(false);
+  const firstInput = useRef(null);
 
-  const markStale = () => {
-    if (message) setStale(true);
-  };
-  const update = (rowId, change) => {
-    setRows((list) => list.map((r) => (r.id === rowId ? { ...r, ...change } : r)));
-    markStale();
-  };
+  const update = (rowId, change) => setRows((list) => list.map((r) => (r.id === rowId ? { ...r, ...change } : r)));
   const addAnother = (part, afterId) =>
     setRows((list) => {
       const i = list.findIndex((r) => r.id === afterId);
@@ -61,35 +54,28 @@ export default function PartsBuilder({ id, title, hint, parts, intro, extra = []
     });
   const remove = (rowId) => setRows((list) => list.filter((r) => r.id !== rowId));
 
-  const generate = () => {
-    const text = buildPartsMessage(parts, rows, { intro, extra });
-    if (!text) {
-      setError("Write at least one product name first.");
-      return;
-    }
-    setError("");
-    setMessage(text);
-    setStale(false);
-    window.setTimeout(() => document.getElementById(outputId)?.focus(), 50);
-  };
-
-  const copy = async () => {
-    if (await copyText(message)) {
-      toast("Message copied. Now send it to the admin.");
-      return true;
-    }
-    toast("Could not copy. Select the message and copy it by hand.", "error");
-    return false;
-  };
-
-  const waBd = whatsappLink(settings.whatsappNumber, message);
-  const waCn = whatsappLink(settings.whatsappNumberCn, message);
-  const fb = facebookChat(settings);
   const filledCount = rows.filter((r) => r.name.trim()).length;
   const isFirstOfPart = (r, i) => rows.findIndex((x) => x.part === r.part) === i;
 
+  const openSend = () => {
+    if (!filledCount) {
+      setNudge(true);
+      firstInput.current?.focus();
+      firstInput.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+    setNudge(false);
+    setOpen(true);
+  };
+
+  // Keep the page's last content above the fixed bar.
+  useEffect(() => {
+    document.documentElement.classList.add("has-sendbar");
+    return () => document.documentElement.classList.remove("has-sendbar");
+  }, []);
+
   return (
-    <section className="pre-builder panel" aria-labelledby={`${id}-title`} onInput={markStale}>
+    <section className="pre-builder panel" aria-labelledby={`${id}-title`}>
       <div className="pre-builder__head">
         <h2 id={`${id}-title`} className="h3">
           {title}
@@ -121,7 +107,19 @@ export default function PartsBuilder({ id, title, hint, parts, intro, extra = []
                 </span>
                 {part.label}
               </label>
-              <input id={inputId} className="input pre-row__input" value={r.name} onChange={(e) => update(r.id, { name: e.target.value })} placeholder={part.placeholder} maxLength={160} autoComplete="off" />
+              <input
+                id={inputId}
+                ref={i === 0 ? firstInput : undefined}
+                className="input pre-row__input"
+                value={r.name}
+                onChange={(e) => {
+                  update(r.id, { name: e.target.value });
+                  setNudge(false);
+                }}
+                placeholder={part.placeholder}
+                maxLength={160}
+                autoComplete="off"
+              />
               <div className="pre-cond" role="radiogroup" aria-label={`${part.label} condition`}>
                 <button type="button" role="radio" aria-checked={r.condition === "pre-owned"} onClick={() => update(r.id, { condition: "pre-owned" })}>
                   Pre-owned
@@ -146,73 +144,94 @@ export default function PartsBuilder({ id, title, hint, parts, intro, extra = []
 
       {children}
 
-      <div className="pre-builder__generate">
-        <button type="button" className="btn btn--primary btn--lg" onClick={generate} data-pulse>
-          <Icon name="sparkles" size={19} /> Generate message
-        </button>
-        {filledCount ? <span className="faint small">{`${filledCount} item${filledCount === 1 ? "" : "s"} added`}</span> : null}
-        {error ? (
-          <p className="field__error" role="alert">
-            {error}
-          </p>
-        ) : null}
-      </div>
+      {/* Rendered on <body>: a blurred or animated parent would stop position: fixed from working. */}
+      {createPortal(
+        <div className="sendfab" role="region" aria-label="Send your list">
+          {nudge ? (
+            <span className="sendfab__nudge" role="alert">
+              Please select one or more products
+            </span>
+          ) : null}
+          <button type="button" className="sendfab__btn" onClick={openSend} data-pulse>
+            <Icon name="send" size={19} />
+            <span>Send my list</span>
+            {filledCount ? (
+              <span className="sendfab__count num" aria-label={`${filledCount} item${filledCount === 1 ? "" : "s"}`}>
+                {filledCount}
+              </span>
+            ) : null}
+          </button>
+        </div>,
+        document.body
+      )}
 
-      <div className={`pre-output${message ? " is-ready" : ""}`}>
-        <label className="field__label" htmlFor={outputId}>
+      {open ? <SendDialog initialText={buildPartsMessage(parts, rows, { intro, extra })} agreement={agreement} onClose={() => setOpen(false)} /> : null}
+    </section>
+  );
+}
+
+function SendDialog({ initialText, agreement, onClose }) {
+  const { settings } = useSettings();
+  const toast = useToast();
+  const [text, setText] = useState(initialText);
+  const [copied, setCopied] = useState(false);
+
+  // The message is copied as soon as the popup opens, so it can be pasted straight away.
+  useEffect(() => {
+    copyText(initialText).then(setCopied);
+  }, [initialText]);
+
+  const fb = facebookChat(settings);
+  const wa = whatsappLink(settings.whatsappNumberCn, text);
+  const copyNow = async () => {
+    const ok = await copyText(text);
+    setCopied(ok);
+    if (!ok) toast("Could not copy. Select the message and copy it by hand.", "error");
+  };
+
+  return (
+    <Modal
+      title="Your message"
+      onClose={onClose}
+      initialFocus={false}
+      footer={
+        fb || wa ? (
+          <div className="send-dialog__foot">
+            <span className="send-dialog__label">Send it to us on:</span>
+            {fb ? (
+              <a className="send-opt send-opt--fb" href={messengerLink(fb)} target="_blank" rel="noopener noreferrer" onClick={copyNow} aria-label="Send on Facebook (Page message)" title="Facebook Page message">
+                <span className="send-opt__icon">
+                  <Icon name="messenger" size={24} />
+                </span>
+                <span className="send-opt__text">Facebook</span>
+              </a>
+            ) : null}
+            {wa ? (
+              <a className="send-opt send-opt--wa" href={wa} target="_blank" rel="noopener noreferrer" onClick={copyNow} aria-label="Send on WhatsApp (Admin CN)" title="WhatsApp: Admin (CN)">
+                <span className="send-opt__icon">
+                  <Icon name="whatsapp" size={24} />
+                </span>
+                <span className="send-opt__text">WhatsApp</span>
+              </a>
+            ) : null}
+          </div>
+        ) : null
+      }
+    >
+      <div className="send-dialog">
+        <p className="send-dialog__note" role="status">
+          <Icon name={copied ? "circleCheck" : "info"} size={17} />
+          {copied ? "Copied. If the chat opens empty, just paste it." : "Check your message below. You can still edit it."}
+        </p>
+        <label className="sr-only" htmlFor="send-message">
           Your message
         </label>
-        <div className="pre-output__box">
-          <textarea
-            id={outputId}
-            className="textarea pre-output__text"
-            rows={8}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onInput={(e) => e.stopPropagation()}
-            placeholder="Your message appears here after you press Generate message. You can still edit it."
-          />
-          <button type="button" className="btn btn--ghost btn--sm pre-output__copy" onClick={copy} disabled={!message}>
-            <Icon name="copy" size={16} /> Copy text
-          </button>
-        </div>
-        {stale ? <p className="faint small">You changed the form. Press Generate message again to update the text.</p> : null}
+        <textarea id="send-message" className="textarea send-dialog__text" rows={9} value={text} onChange={(e) => setText(e.target.value)} onBlur={copyNow} />
 
-        <p className="pre-output__send">Copy and send it to the admin:</p>
-        {agreement}
-        <div className="pre-output__buttons">
-          {waBd ? (
-            <a className={`btn btn--whatsapp${message ? "" : " is-disabled"}`} href={message ? waBd : undefined} aria-disabled={!message} target="_blank" rel="noopener noreferrer" data-pulse>
-              <Icon name="whatsapp" size={19} /> WhatsApp Admin (BD)
-            </a>
-          ) : null}
-          {waCn ? (
-            <a className={`btn btn--whatsapp${message ? "" : " is-disabled"}`} href={message ? waCn : undefined} aria-disabled={!message} target="_blank" rel="noopener noreferrer" data-pulse>
-              <Icon name="whatsapp" size={19} /> WhatsApp Admin (CN)
-            </a>
-          ) : null}
-          {fb ? (
-            <a
-              className={`btn btn--facebook${message ? "" : " is-disabled"}`}
-              href={message ? fb : undefined}
-              aria-disabled={!message}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => {
-                if (message) copy();
-              }}
-            >
-              <Icon name="facebook" size={19} /> Facebook
-            </a>
-          ) : null}
-        </div>
-        {!waBd && !waCn && !fb ? <p className="faint small">Copy the message and send it to us. Our contact links will appear here soon.</p> : null}
-        <p className="faint small">
-          {waBd || waCn ? "WhatsApp opens with your message already written. " : ""}
-          {fb ? "For Facebook, the message is copied first; paste it into the chat." : ""}
-        </p>
-        {after}
+        {typeof agreement === "function" ? agreement(onClose) : agreement}
+
+        {!fb && !wa ? <p className="faint small">Our contact links will appear here soon. The message is copied, so you can paste it to us anywhere.</p> : null}
       </div>
-    </section>
+    </Modal>
   );
 }
