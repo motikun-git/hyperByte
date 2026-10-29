@@ -2702,39 +2702,45 @@ main {
 }
 
 /* ------------------------------------------------------------------ blinking edges */
-/* Borders of panels and product cards light up one after another. Uses an
-   outline so it never fights the real border or hover styles. */
+/* Borders of panels and product cards light up one after another. The glow is
+   a separate layer that only fades (opacity), so the browser does not have to
+   repaint the blurred panels on every frame. */
 @keyframes edge-blink {
   0%,
   100% {
-    outline-color: rgba(139, 92, 246, 0);
+    opacity: 0;
   }
-  45% {
-    outline-color: rgba(139, 92, 246, 0.6);
-  }
-  60% {
-    outline-color: rgba(34, 211, 238, 0.45);
-  }
-  80% {
-    outline-color: rgba(34, 211, 238, 0);
+  50% {
+    opacity: 1;
   }
 }
-:where(.panel, .pcard__frame):not(.admin *) {
-  outline: 1px solid rgba(139, 92, 246, 0);
-  outline-offset: -1px;
+:where(.panel):not(.admin *) {
+  position: relative;
+}
+:where(.panel, .pcard__frame):not(.admin *)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  border: 1px solid rgba(139, 92, 246, 0.55);
+  box-shadow: inset 0 0 0 1px rgba(34, 211, 238, 0.12);
+  pointer-events: none;
+  opacity: 0;
   animation: edge-blink 4.4s ease-in-out infinite;
+  will-change: opacity;
 }
-.panel:nth-child(2n) {
+.panel:nth-child(2n)::after {
   animation-delay: -1.5s;
 }
-.panel:nth-child(3n) {
+.panel:nth-child(3n)::after {
   animation-delay: -2.9s;
 }
-.pcard__frame {
+.pcard__frame::after {
   animation-delay: calc(var(--i, 0) * -0.63s);
 }
-.motion-off .panel,
-.motion-off .pcard__frame {
+.motion-off .panel::after,
+.motion-off .pcard__frame::after {
   animation: none;
 }
 

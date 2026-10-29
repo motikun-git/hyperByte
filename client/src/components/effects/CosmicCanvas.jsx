@@ -66,7 +66,6 @@ export default function CosmicCanvas({ cursor = true }) {
     let nextShower = 0;
     let streams = [];
     let lastFlip = 0;
-    const BIN_COLORS = ["167,139,250", "103,232,249", "129,140,248", "196,181,253"];
 
     // Rows of 0s and 1s drifting left to right, each at its own speed.
     function randomBits() {
@@ -78,23 +77,58 @@ export default function CosmicCanvas({ cursor = true }) {
       }
       return out;
     }
+    // Each row is drawn once onto its own small canvas; every frame only moves
+    // that picture. A flipped bit redraws just its own cell. Much lighter than
+    // drawing every digit on every frame.
+    const BIN_FONT = (size) => `700 ${size}px ui-monospace, "Cascadia Mono", Consolas, monospace`;
+    const binDpr = () => Math.min(window.devicePixelRatio || 1, cfg.maxPixelRatio);
+
+    function paintCells(row, from, to) {
+      const c = row.ctx;
+      const cw = row.cell;
+      const lo = Math.max(0, from);
+      const hi = Math.min(row.text.length - 1, to);
+      c.save();
+      c.beginPath();
+      c.rect(lo * cw - 1, 0, (hi - lo + 1) * cw + 2, row.h);
+      c.clip();
+      c.clearRect(lo * cw - 1, 0, (hi - lo + 1) * cw + 2, row.h);
+      for (let i = Math.max(0, lo - 1); i <= Math.min(row.text.length - 1, hi + 1); i += 1) {
+        if (row.text[i] !== " ") c.strokeText(row.text[i], i * cw, row.h / 2);
+      }
+      c.restore();
+    }
+
     function makeStreams() {
       const n = Math.max(6, Math.min(cfg.binaryRows, Math.round(h / 42)));
       const band = h / n;
+      const dpr = binDpr();
       streams = Array.from({ length: n }, (_, i) => {
         const size = 18 + ((Math.random() * 9) | 0); // big outlined digits
+        const text = randomBits();
+        ctx.font = BIN_FONT(size);
+        const cell = ctx.measureText("0").width;
         const row = {
           y: band * i + band * (0.3 + Math.random() * 0.4),
           size,
           speed: 0.012 + Math.random() * 0.05, // px per ms, different for every row
           offset: Math.random() * 2000,
-          alpha: 0.11 + Math.random() * 0.09,
-          color: BIN_COLORS[i % BIN_COLORS.length],
-          text: randomBits(),
-          width: 0,
+          text,
+          cell,
+          width: cell * text.length,
+          h: Math.ceil(size * 1.5),
         };
-        ctx.font = `700 ${size}px ui-monospace, "Cascadia Mono", Consolas, monospace`;
-        row.width = ctx.measureText(row.text).width;
+        row.canvas = document.createElement("canvas");
+        row.canvas.width = Math.ceil(row.width * dpr);
+        row.canvas.height = Math.ceil(row.h * dpr);
+        row.ctx = row.canvas.getContext("2d");
+        row.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        row.ctx.font = BIN_FONT(size);
+        row.ctx.textBaseline = "middle";
+        // only the outline of each digit is drawn; the inside stays transparent
+        row.ctx.strokeStyle = "rgba(0,0,0,0.95)";
+        row.ctx.lineWidth = 1.4;
+        paintCells(row, 0, text.length - 1);
         return row;
       });
     }
@@ -105,17 +139,14 @@ export default function CosmicCanvas({ cursor = true }) {
         for (let k = 0; k < streams.length * 3; k += 1) {
           const row = streams[(Math.random() * streams.length) | 0];
           const i = (Math.random() * row.text.length) | 0;
-          if (row.text[i] !== " ") row.text = row.text.slice(0, i) + (row.text[i] === "0" ? "1" : "0") + row.text.slice(i + 1);
+          if (row.text[i] === " ") continue;
+          row.text = row.text.slice(0, i) + (row.text[i] === "0" ? "1" : "0") + row.text.slice(i + 1);
+          paintCells(row, i, i);
         }
       }
-      ctx.textBaseline = "middle";
       for (const row of streams) {
-        // only the outline of each digit is drawn; the inside stays transparent
-        ctx.font = `700 ${row.size}px ui-monospace, "Cascadia Mono", Consolas, monospace`;
-        ctx.strokeStyle = "rgba(0,0,0,0.95)";
-        ctx.lineWidth = 1.4;
         const shift = ((animate ? t * row.speed : 0) + row.offset) % row.width;
-        for (let x = shift - row.width; x < w; x += row.width) ctx.strokeText(row.text, x, row.y);
+        for (let x = shift - row.width; x < w; x += row.width) ctx.drawImage(row.canvas, x, row.y - row.h / 2, row.width, row.h);
       }
     }
 
