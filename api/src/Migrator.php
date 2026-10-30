@@ -77,15 +77,4 @@ final class Migrator
     {
         return Db::tableExists('admins') && Db::tableExists('products');
     }
-
-    public static function pending(): array
-    {
-        $files = glob(HB_API_DIR . '/migrations/*.php') ?: [];
-        $versions = array_map(static fn ($f) => basename($f, '.php'), $files);
-        if (!Db::tableExists('schema_migrations')) {
-            return $versions;
-        }
-        $done = array_column(Db::all('SELECT version FROM schema_migrations'), 'version');
-        return array_values(array_diff($versions, $done));
-    }
 }

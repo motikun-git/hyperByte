@@ -10,7 +10,7 @@ const TEXT_KEYS = [
   "siteName", "tagline", "heroTitle", "heroText", "metaDescription",
   "whatsappNumber", "whatsappNumberCn", "facebookUrl", "messengerUrl", "instagramUrl", "youtubeUrl", "tiktokUrl",
   "phone", "email", "address", "mapUrl", "hours",
-  "warrantyTerms", "warrantyPolicy", "preorderInfo", "preorderPolicy", "aboutText", "customBuildMessage",
+  "warrantyTerms", "warrantyPolicy", "preorderPolicy", "aboutText", "customBuildMessage",
   "memoName", "memoAddress", "memoPhone", "memoFacebook", "memoSiteUrl",
 ];
 

@@ -73,13 +73,3 @@ export function productDetails(product, settings, url) {
   lines.push("", "Please contact hyperByte for current availability and further details.");
   return lines.join("\n");
 }
-
-/** WhatsApp text for a custom PC build, with the optional details the visitor filled in. */
-export function customBuildText(settings, { budget = "", use = "", notes = "" } = {}) {
-  const base = settings?.customBuildMessage || "Hello hyperByte, I would like to discuss a custom PC build. Please help me with compatible components and pricing.";
-  const extra = [];
-  if (budget.trim()) extra.push(`Budget: ${budget.trim()}`);
-  if (use.trim()) extra.push(`Main use: ${use.trim()}`);
-  if (notes.trim()) extra.push(`Notes: ${notes.trim()}`);
-  return extra.length ? `${base}\n\n${extra.join("\n")}` : base;
-}

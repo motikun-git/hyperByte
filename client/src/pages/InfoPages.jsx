@@ -2,12 +2,10 @@
 // pre-order information, about, and the custom PC build inquiry.
 import { useState } from "react";
 import { Link } from "../lib/router.jsx";
-import { useApi } from "../lib/useApi.js";
 import { usePageMeta } from "../lib/usePageMeta.js";
 import { useSettings } from "../context/SettingsContext.jsx";
 import { facebookChat, mapLink, whatsappLink, mainWhatsapp } from "../lib/contact.js";
 import { SectionHeading } from "../components/effects/Kinetic.jsx";
-import ProductGrid from "../components/product/ProductGrid.jsx";
 import Prose from "../components/ui/Prose.jsx";
 import Icon from "../components/ui/Icon.jsx";
 import PartsBuilder from "../components/order/PartsBuilder.jsx";
@@ -82,34 +80,6 @@ export function WarrantyPolicy() {
         </p>
       ) : null}
       <Prose text={settings.warrantyPolicy} className="info-prose" />
-    </InfoLayout>
-  );
-}
-
-export function PreorderInfo() {
-  const { settings } = useSettings();
-  usePageMeta(`Pre-order information | ${settings.siteName}`, "How pre-orders work at hyperByte. Nothing is confirmed until you agree, and no payment is taken on this website.");
-  const pre = useApi("/products?status=preorder&limit=8");
-  return (
-    <InfoLayout
-      title="Pre-order information"
-      lede="Looking for something that is not in stock? We may be able to get it for you."
-      aside={<ContactCard message="Hello hyperByte, I would like to pre-order an item. Can you help me find it?" title="Ask for an item" text="Tell us the exact model you want. We will check and get back to you." />}
-    >
-      <Prose text={settings.preorderInfo} className="info-prose" />
-      {pre.data?.items?.length ? (
-        <section className="info-page__products" aria-labelledby="pre-now">
-          <div className="section-head">
-            <h2 id="pre-now" className="h2">
-              Open for pre-order now
-            </h2>
-            <Link className="btn btn--ghost btn--sm" to="/products?status=preorder">
-              All pre-orders <Icon name="arrowRight" size={16} />
-            </Link>
-          </div>
-          <ProductGrid items={pre.data.items} />
-        </section>
-      ) : null}
     </InfoLayout>
   );
 }

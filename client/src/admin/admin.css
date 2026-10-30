@@ -359,9 +359,7 @@
   .a-grid--2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .a-grid--3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
+  
   .a-span-2 {
     grid-column: span 2;
   }
@@ -521,12 +519,6 @@
     grid-template-columns: 1.3fr 1fr;
     align-items: start;
   }
-}
-.a-quick {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 18px 0 4px;
 }
 
 /* ------------------------------------------------------------------ lists */

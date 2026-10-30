@@ -13,11 +13,6 @@ final class Db
         return Env::get('DB_DRIVER', 'mysql') === 'sqlite' ? 'sqlite' : 'mysql';
     }
 
-    public static function isConfigured(): bool
-    {
-        return self::driver() === 'sqlite' || Env::get('DB_NAME') !== null;
-    }
-
     public static function pdo(): PDO
     {
         if (self::$pdo !== null) {

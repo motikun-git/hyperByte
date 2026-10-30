@@ -86,7 +86,7 @@ $status = 200;
 $meta = [
     'title' => "$site | " . $settings['tagline'],
     'description' => (string) $settings['metaDescription'],
-    'image' => $settings['logoUrl'] ? $origin . $settings['logoUrl'] : "$origin/og-image.png",
+    'image' => $settings['logoUrl'] ? $origin . $settings['logoUrl'] : "$origin/og-image.jpg",
     'type' => 'website',
     'url' => $origin . ($path === '/' ? '/' : $path),
     'robots' => 'index, follow',

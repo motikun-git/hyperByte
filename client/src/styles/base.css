@@ -4,15 +4,12 @@
   --void: #070812;
   --navy: #0b1020;
   --navy-2: #10172e;
-  --navy-3: #161e3b;
   --line: rgba(148, 163, 255, 0.13);
   --line-2: rgba(148, 163, 255, 0.24);
   --text: #f8faff;
   --text-2: #aab3d6;
   --text-3: #7c86b0;
   --violet: #8b5cf6;
-  --purple: #a855f7;
-  --blue: #3b82f6;
   --cyan: #22d3ee;
   --whatsapp: #25d366;
   --facebook: #1877f2;
@@ -36,14 +33,12 @@
   --r-xl: 26px;
   --pill: 999px;
   --shadow: 0 18px 50px -24px rgba(0, 0, 0, 0.8);
-  --glow: 0 0 0 1px rgba(139, 92, 246, 0.45), 0 10px 40px -10px rgba(139, 92, 246, 0.55);
 
   /* motion (mirrors src/motion/config.js) */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-fast: 180ms;
   --dur: 320ms;
-  --dur-slow: 700ms;
 
   --header-h: 72px;
   --gutter: 20px;
@@ -601,12 +596,6 @@ ol[role="list"] {
   border-radius: var(--r-lg);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-}
-.divider {
-  height: 1px;
-  background: var(--line);
-  border: 0;
-  margin: 0;
 }
 
 /* ------------------------------------------------------------------ feedback */

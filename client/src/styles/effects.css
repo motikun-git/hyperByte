@@ -564,3 +564,11 @@
 .motion-off .hw {
   transform: rotate(var(--rot, 0deg));
 }
+
+/* Sections scrolled out of view pause their looping animations (see App.jsx). */
+.is-offscreen,
+.is-offscreen *,
+.is-offscreen *::before,
+.is-offscreen *::after {
+  animation-play-state: paused !important;
+}

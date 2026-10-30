@@ -85,15 +85,13 @@ export default function PreorderRequest() {
 
       {settings.preorderPolicy ? (
         <section className="pre-info" aria-label="Pre-order policy">
-          {settings.preorderPolicy ? (
-            <details className="pre-policy panel" open={policyOpen} onToggle={(e) => setPolicyOpen(e.currentTarget.open)}>
-              <summary>
-                <Icon name="fileText" size={19} /> Pre-order policy
-                <Icon name="chevronDown" size={18} className="pre-policy__chev" />
-              </summary>
-              <Prose text={settings.preorderPolicy} className="info-prose" />
-            </details>
-          ) : null}
+          <details className="pre-policy panel" open={policyOpen} onToggle={(e) => setPolicyOpen(e.currentTarget.open)}>
+            <summary>
+              <Icon name="fileText" size={19} /> Pre-order policy
+              <Icon name="chevronDown" size={18} className="pre-policy__chev" />
+            </summary>
+            <Prose text={settings.preorderPolicy} className="info-prose" />
+          </details>
         </section>
       ) : null}
     </div>

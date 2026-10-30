@@ -30,7 +30,6 @@ const DEFAULTS = {
   customBuildMessage: "Hello hyperByte, I would like to discuss a custom PC build. Please help me with compatible components and pricing.",
   warrantyPolicy: "",
   warrantyPolicyReviewed: false,
-  preorderInfo: "",
   preorderPolicy: "",
   aboutText: "",
 };

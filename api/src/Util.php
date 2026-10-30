@@ -134,16 +134,6 @@ final class Util
         return preg_match('/^[1-9]\d{7,14}$/', $digits) ? $digits : '';
     }
 
-    /** Bangladeshi mobile number in 01XXXXXXXXX form, or "" if it is not one. */
-    public static function bdPhone(mixed $value): string
-    {
-        $digits = preg_replace('/\D/', '', self::line($value, 30)) ?? '';
-        if (str_starts_with($digits, '880')) {
-            $digits = substr($digits, 2);
-        }
-        return preg_match('/^01[3-9]\d{8}$/', $digits) ? $digits : '';
-    }
-
     public static function randomCode(int $length, string $alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'): string
     {
         $out = '';
