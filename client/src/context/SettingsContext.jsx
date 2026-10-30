@@ -19,7 +19,7 @@ const DEFAULTS = {
   phone: "",
   email: "",
   address: "Rampura, Dhaka, Bangladesh",
-  mapUrl: "",
+  mapUrl: "https://maps.app.goo.gl/npmfULqKhCbhBbHbA",
   hours: "",
   youtubeUrl: "",
   instagramUrl: "",

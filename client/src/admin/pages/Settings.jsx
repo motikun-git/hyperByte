@@ -150,7 +150,7 @@ export default function SettingsPage() {
             {text("phone", "Phone", { optional: true, inputMode: "tel" })}
             {text("email", "Email", { optional: true, type: "email" })}
             {text("address", "Address", { optional: true })}
-            {text("mapUrl", "Google Maps link", { optional: true, hint: "Empty: a map search for the address is used." })}
+            {text("mapUrl", "Google Maps link", { optional: true, hint: "Opened by the address on the website. Empty: a map search for the address is used." })}
             {text("hours", "Opening hours", { optional: true, placeholder: "e.g. Every day, 11am to 9pm" })}
           </div>
         </section>

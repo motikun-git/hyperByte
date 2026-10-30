@@ -22,7 +22,7 @@ final class Settings
         'phone' => '',
         'email' => '',
         'address' => 'Rampura, Dhaka, Bangladesh',
-        'mapUrl' => '',
+        'mapUrl' => 'https://maps.app.goo.gl/npmfULqKhCbhBbHbA',
         'hours' => '',
         'youtubeUrl' => '',
         'instagramUrl' => 'https://www.instagram.com/hyperbyte_cn',
