@@ -1,6 +1,6 @@
 # hyperByte website
 
-Product showcase and inquiry website for hyperByte (second-hand PC parts and laptops, Khilgaon, Dhaka).
+Product showcase and inquiry website for hyperByte (second-hand PC parts and laptops, Rampura, Dhaka).
 Customers browse products and ask on WhatsApp or Facebook. There is no cart, checkout or online payment.
 
 - **Website**: home (featured GPUs, recently added, available, pre-order, categories, custom PC build), products with
